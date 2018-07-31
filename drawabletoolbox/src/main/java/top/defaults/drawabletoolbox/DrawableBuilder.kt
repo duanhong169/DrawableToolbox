@@ -22,6 +22,7 @@ class DrawableBuilder {
     fun topRightRadius(topRightRadius: Int) = apply { properties.topRightRadius = topRightRadius }
     fun bottomRightRadius(bottomRightRadius: Int) = apply { properties.bottomRightRadius = bottomRightRadius }
     fun bottomLeftRadius(bottomLeftRadius: Int) = apply { properties.bottomLeftRadius = bottomLeftRadius }
+    fun rounded() = apply { properties.cornerRadius = Int.MAX_VALUE }
 
     fun useGradient(useGradient: Boolean) = apply { properties.useGradient = useGradient }
     fun type(type: Int) = apply { properties.type = type }

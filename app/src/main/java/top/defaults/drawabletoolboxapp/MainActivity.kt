@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         val textView = findViewById<TextView>(R.id.textView)
         val backgroundDrawableBuilder = DrawableBuilder()
                 .shape(GradientDrawable.RECTANGLE)
-                .cornerRadius(20)
+                .rounded()
                 .strokeWidth(4)
                 .strokeColor(Color.MAGENTA)
                 .strokeColorPressed(Color.BLACK)
