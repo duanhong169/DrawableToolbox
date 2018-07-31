@@ -3,7 +3,6 @@ package top.defaults.drawabletoolbox
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.StateListDrawable
 import android.os.Build
 import android.util.StateSet
 
@@ -58,16 +57,18 @@ class DrawableBuilder {
     fun dashWidth(dashWidth: Int) = apply { properties.dashWidth = dashWidth }
     fun dashGap(dashGap: Int) = apply { properties.dashGap = dashGap }
 
-    fun build() : Drawable {
-        val needStateListDrawable = needStateListDrawable()
-        val drawable: Drawable = if (needStateListDrawable) StateListDrawable() else GradientDrawable()
-
-        properties.apply {
-            if (drawable is StateListDrawable) {
-                setupStateListDrawable(drawable)
-            } else if (drawable is GradientDrawable) {
-                setupGradientDrawable(drawable)
-            }
+    fun build(): Drawable {
+        val drawable: Drawable
+        if (needStateListDrawable()) {
+            drawable = StateListDrawableBuilder()
+                    .pressed(buildPressedDrawable())
+                    .disabled(buildDisabledDrawable())
+                    .selected(buildSelectedDrawable())
+                    .normal(buildNormalDrawable())
+                    .build()
+        } else {
+            drawable = GradientDrawable()
+            setupGradientDrawable(drawable)
         }
         return drawable
     }
@@ -114,19 +115,6 @@ class DrawableBuilder {
         colors.add(properties.strokeColor)
 
         return ColorStateList(states.toTypedArray(), colors.toIntArray())
-    }
-
-    private fun setupStateListDrawable(stateListDrawable: StateListDrawable) {
-        buildPressedDrawable()?.let {
-            stateListDrawable.addState(intArrayOf(android.R.attr.state_pressed), it)
-        }
-        buildDisabledDrawable()?.let {
-            stateListDrawable.addState(intArrayOf(-android.R.attr.state_enabled), it)
-        }
-        buildSelectedDrawable()?.let {
-            stateListDrawable.addState(intArrayOf(android.R.attr.state_selected), it)
-        }
-        stateListDrawable.addState(StateSet.WILD_CARD, buildNormalDrawable())
     }
 
     private fun buildPressedDrawable(): Drawable? {
