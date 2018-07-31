@@ -1,6 +1,7 @@
 package top.defaults.drawabletoolboxapp
 
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -15,10 +16,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val textView = findViewById<TextView>(R.id.textView)
-        val background = DrawableBuilder().shape(GradientDrawable.OVAL).build()
-        textView.setBackgroundDrawable(background)
+        val backgroundDrawableBuilder = DrawableBuilder()
+                .shape(GradientDrawable.RECTANGLE)
+                .cornerRadius(20)
+                .strokeWidth(4)
+                .strokeColor(Color.MAGENTA)
+                .strokeColorPressed(Color.BLACK)
+        textView.setBackgroundDrawable(backgroundDrawableBuilder.build())
+        textView.isClickable = true
 
-        findViewById<Button>(R.id.javaVersion).setOnClickListener {
+        val button = findViewById<Button>(R.id.javaVersion)
+        button.setBackgroundDrawable(backgroundDrawableBuilder.build())
+        button.setOnClickListener {
             val intent = Intent(this, JavaActivity::class.java)
             startActivity(intent)
         }

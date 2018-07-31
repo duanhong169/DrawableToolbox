@@ -1,5 +1,7 @@
 package top.defaults.drawabletoolbox
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Parcel
 import android.os.Parcelable
@@ -23,19 +25,21 @@ class DrawableProperties (
         var centerX: Float = 0.5f,
         var centerY: Float = 0.5f,
         var useCenterColor: Boolean = true,
-        var startColor: Int = MAIN_THEME_COLOR,
+        var startColor: Int = DEFAULT_COLOR,
         var centerColor: Int = 0xFFFFFFFF.toInt(),
         var endColor: Int = 0x7FFFFFFF,
         var gradientRadiusType: Int = RADIUS_TYPE_FRACTION,
         var gradientRadius: Float = 0.5f,
 
-        var width: Int = 400,
-        var height: Int = 400,
+        var width: Int = 0,
+        var height: Int = 0,
 
-        var solidColor: Int = MAIN_THEME_COLOR,
+        var solidColor: Int = Color.TRANSPARENT,
+        var solidColorStateList: ColorStateList? = null,
 
         var strokeWidth: Int = 0,
-        var strokeColor: Int = MAIN_THEME_COLOR_DARK,
+        var strokeColor: Int = Color.DKGRAY,
+        var strokeColorStateList: ColorStateList? = null,
         var dashWidth: Int = 0,
         var dashGap: Int = 0
 ) : Parcelable {
@@ -44,8 +48,7 @@ class DrawableProperties (
         const val RADIUS_TYPE_PIXELS = 0
         const val RADIUS_TYPE_FRACTION = 1
 
-        internal const val MAIN_THEME_COLOR = 0xFF2DCFCA.toInt()
-        internal const val MAIN_THEME_COLOR_DARK = 0xFF24A5A1.toInt()
+        internal const val DEFAULT_COLOR = 0xFF2DCFCA.toInt()
 
         @JvmField val CREATOR = object : Parcelable.Creator<DrawableProperties> {
             override fun createFromParcel(parcel: Parcel): DrawableProperties {
@@ -92,8 +95,10 @@ class DrawableProperties (
             parcel.readInt(),
             parcel.readInt(),
             parcel.readInt(),
+            parcel.readParcelable(ColorStateList::class.java.classLoader),
             parcel.readInt(),
             parcel.readInt(),
+            parcel.readParcelable(ColorStateList::class.java.classLoader),
             parcel.readInt(),
             parcel.readInt())
 
@@ -142,6 +147,7 @@ class DrawableProperties (
         parcel.writeFloat(innerRadiusRatio)
         parcel.writeInt(thickness)
         parcel.writeFloat(thicknessRatio)
+        parcel.writeInt(cornerRadius)
         parcel.writeInt(topLeftRadius)
         parcel.writeInt(topRightRadius)
         parcel.writeInt(bottomRightRadius)
@@ -160,8 +166,10 @@ class DrawableProperties (
         parcel.writeInt(width)
         parcel.writeInt(height)
         parcel.writeInt(solidColor)
+        parcel.writeParcelable(solidColorStateList, flags)
         parcel.writeInt(strokeWidth)
         parcel.writeInt(strokeColor)
+        parcel.writeParcelable(strokeColorStateList, flags)
         parcel.writeInt(dashWidth)
         parcel.writeInt(dashGap)
     }
