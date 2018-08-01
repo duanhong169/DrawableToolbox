@@ -68,6 +68,7 @@ class DrawableBuilder {
     fun solidColorSelected(color: Int?) = apply { solidColorSelected = color }
 
     fun strokeWidth(strokeWidth: Int) = apply { properties.strokeWidth = strokeWidth }
+
     fun strokeColor(strokeColor: Int) = apply { properties.strokeColor = strokeColor }
     private var strokeColorPressed: Int? = null
     fun strokeColorPressed(color: Int?) = apply { strokeColorPressed = color }
@@ -75,6 +76,7 @@ class DrawableBuilder {
     fun strokeColorDisabled(color: Int?) = apply { strokeColorDisabled = color }
     private var strokeColorSelected: Int? = null
     fun strokeColorSelected(color: Int?) = apply { strokeColorSelected = color }
+
     fun dashWidth(dashWidth: Int) = apply { properties.dashWidth = dashWidth }
     fun dashGap(dashGap: Int) = apply { properties.dashGap = dashGap }
     fun hairlineBordered() = apply { strokeWidth(1) }

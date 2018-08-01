@@ -26,7 +26,7 @@ class DrawableProperties (
         var centerY: Float = 0.5f,
         var useCenterColor: Boolean = true,
         var startColor: Int = DEFAULT_COLOR,
-        var centerColor: Int = 0xFFFFFFFF.toInt(),
+        var centerColor: Int? = null,
         var endColor: Int = 0x7FFFFFFF,
         var gradientRadiusType: Int = RADIUS_TYPE_FRACTION,
         var gradientRadius: Float = 0.5f,
@@ -70,10 +70,6 @@ class DrawableProperties (
             bottomLeftRadius = value
         }
 
-    init {
-        this.cornerRadius = cornerRadius
-    }
-
     constructor(parcel: Parcel) : this(
             parcel.readInt(),
             parcel.readInt(),
@@ -92,7 +88,7 @@ class DrawableProperties (
             parcel.readFloat(),
             parcel.readByte() != 0.toByte(),
             parcel.readInt(),
-            parcel.readInt(),
+            parcel.readValue(Int::class.java.classLoader) as? Int,
             parcel.readInt(),
             parcel.readInt(),
             parcel.readFloat(),
@@ -105,6 +101,10 @@ class DrawableProperties (
             parcel.readParcelable(ColorStateList::class.java.classLoader),
             parcel.readInt(),
             parcel.readInt())
+
+    init {
+        this.cornerRadius = cornerRadius
+    }
 
     fun copy(): DrawableProperties {
         val parcel = Parcel.obtain()
@@ -140,8 +140,8 @@ class DrawableProperties (
     }
 
     fun getColors(): IntArray {
-        return if (useCenterColor) {
-            intArrayOf(startColor, centerColor, endColor)
+        return if (useCenterColor && centerColor != null) {
+            intArrayOf(startColor, centerColor!!, endColor)
         } else intArrayOf(startColor, endColor)
     }
 
@@ -151,7 +151,6 @@ class DrawableProperties (
         parcel.writeFloat(innerRadiusRatio)
         parcel.writeInt(thickness)
         parcel.writeFloat(thicknessRatio)
-        parcel.writeInt(cornerRadius)
         parcel.writeInt(topLeftRadius)
         parcel.writeInt(topRightRadius)
         parcel.writeInt(bottomRightRadius)
@@ -163,7 +162,7 @@ class DrawableProperties (
         parcel.writeFloat(centerY)
         parcel.writeByte(if (useCenterColor) 1 else 0)
         parcel.writeInt(startColor)
-        parcel.writeInt(centerColor)
+        parcel.writeValue(centerColor)
         parcel.writeInt(endColor)
         parcel.writeInt(gradientRadiusType)
         parcel.writeFloat(gradientRadius)
