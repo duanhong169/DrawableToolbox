@@ -108,3 +108,25 @@ fun setColors(drawable: GradientDrawable, value: IntArray) {
         e.printStackTrace()
     }
 }
+
+fun setGradientRadiusType(drawable: GradientDrawable, value: Int) {
+    try {
+        val type = resolveField(gradientState, "mGradientRadiusType")
+        type.setInt(drawable.constantState, value)
+    } catch (e: NoSuchFieldException) {
+        e.printStackTrace()
+    } catch (e: IllegalAccessException) {
+        e.printStackTrace()
+    }
+}
+
+fun setGradientRadius(drawable: GradientDrawable, value: Float) {
+    try {
+        val gradientRadius = resolveField(gradientState, "mGradientRadius")
+        gradientRadius.setFloat(drawable.constantState, value)
+    } catch (e: NoSuchFieldException) {
+        e.printStackTrace()
+    } catch (e: IllegalAccessException) {
+        e.printStackTrace()
+    }
+}

@@ -31,8 +31,8 @@ class DrawableProperties (
         var gradientRadiusType: Int = RADIUS_TYPE_FRACTION,
         var gradientRadius: Float = 0.5f,
 
-        var width: Int = 0,
-        var height: Int = 0,
+        var width: Int = -1,
+        var height: Int = -1,
 
         var solidColor: Int = Color.TRANSPARENT,
         var solidColorStateList: ColorStateList? = null,
@@ -69,6 +69,10 @@ class DrawableProperties (
             bottomRightRadius = value
             bottomLeftRadius = value
         }
+
+    init {
+        this.cornerRadius = cornerRadius
+    }
 
     constructor(parcel: Parcel) : this(
             parcel.readInt(),
@@ -120,7 +124,7 @@ class DrawableProperties (
 
     fun getOrientation(): GradientDrawable.Orientation {
         val angle = this.angle % 360
-        var orientation: GradientDrawable.Orientation = GradientDrawable.Orientation.LEFT_RIGHT
+        val orientation: GradientDrawable.Orientation
         orientation = when (angle) {
             0 -> GradientDrawable.Orientation.LEFT_RIGHT
             45 -> GradientDrawable.Orientation.BL_TR

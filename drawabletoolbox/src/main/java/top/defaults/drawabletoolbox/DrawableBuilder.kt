@@ -10,8 +10,12 @@ class DrawableBuilder {
 
     private var properties = DrawableProperties()
 
-    fun properties(properties: DrawableProperties) = apply { this.properties = properties.copy() }
+    fun batch(properties: DrawableProperties) = apply { this.properties = properties.copy() }
     fun shape(shape: Int) = apply { properties.shape = shape }
+    fun rectangle() = apply { shape(GradientDrawable.RECTANGLE) }
+    fun oval() = apply { shape(GradientDrawable.OVAL) }
+    fun line() = apply { shape(GradientDrawable.LINE) }
+    fun ring() = apply { shape(GradientDrawable.RING) }
     fun innerRadius(innerRadius: Int) = apply { properties.innerRadius = innerRadius }
     fun innerRadiusRatio(innerRadiusRatio: Float) = apply { properties.innerRadiusRatio = innerRadiusRatio }
     fun thickness(thickness: Int) = apply { properties.thickness = thickness }
@@ -22,22 +26,38 @@ class DrawableBuilder {
     fun topRightRadius(topRightRadius: Int) = apply { properties.topRightRadius = topRightRadius }
     fun bottomRightRadius(bottomRightRadius: Int) = apply { properties.bottomRightRadius = bottomRightRadius }
     fun bottomLeftRadius(bottomLeftRadius: Int) = apply { properties.bottomLeftRadius = bottomLeftRadius }
-    fun rounded() = apply { properties.cornerRadius = Int.MAX_VALUE }
+    fun rounded() = apply { cornerRadius(Int.MAX_VALUE) }
+    fun cornerRadii(topLeftRadius: Int, topRightRadius: Int, bottomRightRadius: Int, bottomLeftRadius: Int) = apply {
+        topLeftRadius(topLeftRadius); topRightRadius(topRightRadius); bottomRightRadius(bottomRightRadius); bottomLeftRadius(bottomLeftRadius)
+    }
 
     fun useGradient(useGradient: Boolean) = apply { properties.useGradient = useGradient }
+    fun useGradient() = apply { useGradient(true) }
     fun type(type: Int) = apply { properties.type = type }
     fun angle(angle: Int) = apply { properties.angle = angle }
     fun centerX(centerX: Float) = apply { properties.centerX = centerX }
     fun centerY(centerY: Float) = apply { properties.centerY = centerY }
+    fun center(centerX: Float, centerY: Float) = apply { centerX(centerX); centerY(centerY) }
     fun useCenterColor(useCenterColor: Boolean) = apply { properties.useCenterColor = useCenterColor }
     fun startColor(startColor: Int) = apply { properties.startColor = startColor }
     fun centerColor(centerColor: Int) = apply { properties.centerColor = centerColor }
     fun endColor(endColor: Int) = apply { properties.endColor = endColor }
+    fun gradientColors(startColor: Int, endColor: Int, centerColor: Int?) = apply {
+        startColor(startColor); endColor(endColor)
+        useCenterColor(centerColor != null)
+        centerColor?.let {
+            centerColor(it)
+        }
+    }
     fun gradientRadiusType(gradientRadiusType: Int) = apply { properties.gradientRadiusType = gradientRadiusType }
     fun gradientRadius(gradientRadius: Float) = apply { properties.gradientRadius = gradientRadius }
+    fun gradientRadius(radius: Float, type: Int) = apply { gradientRadius(radius); gradientRadiusType(type) }
+    fun gradientRadiusInPixel(radius: Float) = apply { gradientRadius(radius); gradientRadiusType(DrawableProperties.RADIUS_TYPE_PIXELS) }
+    fun gradientRadiusInFraction(radius: Float) = apply { gradientRadius(radius); gradientRadiusType(DrawableProperties.RADIUS_TYPE_FRACTION) }
 
     fun width(width: Int) = apply { properties.width = width }
     fun height(height: Int) = apply { properties.height = height }
+    fun size(width: Int, height: Int) = apply { width(width); height(height) }
 
     fun solidColor(solidColor: Int) = apply { properties.solidColor = solidColor }
     private var solidColorPressed: Int? = null
@@ -57,6 +77,11 @@ class DrawableBuilder {
     fun strokeColorSelected(color: Int?) = apply { strokeColorSelected = color }
     fun dashWidth(dashWidth: Int) = apply { properties.dashWidth = dashWidth }
     fun dashGap(dashGap: Int) = apply { properties.dashGap = dashGap }
+    fun hairlineBordered() = apply { strokeWidth(1) }
+    fun shortDashed() = apply { dashWidth(12); dashGap(12) }
+    fun mediumDashed() = apply { dashWidth(24); dashGap(24) }
+    fun longDashed() = apply { dashWidth(36); dashGap(36) }
+    fun dashed() = apply { mediumDashed() }
 
     fun build(): Drawable {
         val drawable: Drawable
@@ -179,7 +204,8 @@ class DrawableBuilder {
             drawable.cornerRadii = getCornerRadii()
             if (useGradient) {
                 drawable.gradientType = type
-                drawable.gradientRadius = gradientRadius
+                setGradientRadiusType(drawable, gradientRadiusType)
+                setGradientRadius(drawable, gradientRadius)
                 drawable.setGradientCenter(centerX, centerY)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     drawable.orientation = getOrientation()
@@ -195,7 +221,7 @@ class DrawableBuilder {
                     drawable.setColor(solidColor)
                 }
             }
-            drawable.setSize(width + strokeWidth, height + strokeWidth)
+            drawable.setSize(width, height)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 drawable.setStroke(strokeWidth, getStrokeColorStateList(), dashWidth.toFloat(), dashGap.toFloat())
             } else {
