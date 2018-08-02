@@ -36,6 +36,9 @@ class DrawableBuilder {
     fun useGradient(useGradient: Boolean) = apply { properties.useGradient = useGradient }
     fun useGradient() = apply { useGradient(true) }
     fun gradientType(type: Int) = apply { properties.type = type }
+    fun linearGradient() = apply { gradientType(GradientDrawable.LINEAR_GRADIENT) }
+    fun radialGradient() = apply { gradientType(GradientDrawable.RADIAL_GRADIENT) }
+    fun sweepGradient() = apply { gradientType(GradientDrawable.SWEEP_GRADIENT) }
     fun angle(angle: Int) = apply { properties.angle = angle }
     fun centerX(centerX: Float) = apply { properties.centerX = centerX }
     fun centerY(centerY: Float) = apply { properties.centerY = centerY }
@@ -110,6 +113,10 @@ class DrawableBuilder {
     }
 
     private fun getSolidColorStateList(): ColorStateList {
+        if (properties.solidColorStateList != null) {
+            return properties.solidColorStateList!!
+        }
+
         val states = mutableListOf<IntArray>()
         val colors = mutableListOf<Int>()
 
@@ -132,6 +139,10 @@ class DrawableBuilder {
     }
 
     private fun getStrokeColorStateList(): ColorStateList {
+        if (properties.strokeColorStateList != null) {
+            return properties.strokeColorStateList!!
+        }
+
         val states = mutableListOf<IntArray>()
         val colors = mutableListOf<Int>()
 
@@ -162,7 +173,7 @@ class DrawableBuilder {
             pressedDrawable.setColor(it)
         }
         strokeColorPressed?.let {
-            pressedDrawable.setColor(it)
+            setStrokeColor(pressedDrawable, it)
         }
         return pressedDrawable
     }
@@ -176,7 +187,7 @@ class DrawableBuilder {
             disabledDrawable.setColor(it)
         }
         strokeColorDisabled?.let {
-            disabledDrawable.setColor(it)
+            setStrokeColor(disabledDrawable, it)
         }
         return disabledDrawable
     }
@@ -190,7 +201,7 @@ class DrawableBuilder {
             selectedDrawable.setColor(it)
         }
         strokeColorSelected?.let {
-            selectedDrawable.setColor(it)
+            setStrokeColor(selectedDrawable, it)
         }
         return selectedDrawable
     }

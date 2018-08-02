@@ -24,7 +24,7 @@ public class JavaActivity extends AppCompatActivity {
                 .useLevelForRing()
                 .useGradient()
                 .useLevelForGradient()
-                .gradientType(GradientDrawable.SWEEP_GRADIENT)
+                .sweepGradient()
                 .gradientRadiusInFraction(0.5f)
                 .useCenterColor(false)
                 .build();

@@ -130,3 +130,14 @@ fun setGradientRadius(drawable: GradientDrawable, value: Float) {
         e.printStackTrace()
     }
 }
+
+fun setStrokeColor(drawable: GradientDrawable, value: Int) {
+    try {
+        val type = resolveField(gradientState, "mStrokeColor")
+        type.setInt(drawable.constantState, value)
+    } catch (e: NoSuchFieldException) {
+        e.printStackTrace()
+    } catch (e: IllegalAccessException) {
+        e.printStackTrace()
+    }
+}
