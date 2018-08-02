@@ -20,6 +20,8 @@ class DrawableBuilder {
     fun innerRadiusRatio(innerRadiusRatio: Float) = apply { properties.innerRadiusRatio = innerRadiusRatio }
     fun thickness(thickness: Int) = apply { properties.thickness = thickness }
     fun thicknessRatio(thicknessRatio: Float) = apply { properties.thicknessRatio = thicknessRatio }
+    fun useLevelForRing(use: Boolean) = apply { properties.useLevelForRing = use }
+    fun useLevelForRing() = apply { useLevelForRing(true) }
 
     fun cornerRadius(cornerRadius: Int) = apply { properties.cornerRadius = cornerRadius }
     fun topLeftRadius(topLeftRadius: Int) = apply { properties.topLeftRadius = topLeftRadius }
@@ -33,14 +35,18 @@ class DrawableBuilder {
 
     fun useGradient(useGradient: Boolean) = apply { properties.useGradient = useGradient }
     fun useGradient() = apply { useGradient(true) }
-    fun type(type: Int) = apply { properties.type = type }
+    fun gradientType(type: Int) = apply { properties.type = type }
     fun angle(angle: Int) = apply { properties.angle = angle }
     fun centerX(centerX: Float) = apply { properties.centerX = centerX }
     fun centerY(centerY: Float) = apply { properties.centerY = centerY }
     fun center(centerX: Float, centerY: Float) = apply { centerX(centerX); centerY(centerY) }
     fun useCenterColor(useCenterColor: Boolean) = apply { properties.useCenterColor = useCenterColor }
+    fun useCenterColor() = apply { useCenterColor(true) }
     fun startColor(startColor: Int) = apply { properties.startColor = startColor }
-    fun centerColor(centerColor: Int) = apply { properties.centerColor = centerColor }
+    fun centerColor(centerColor: Int) = apply {
+        properties.centerColor = centerColor
+        useCenterColor(true)
+    }
     fun endColor(endColor: Int) = apply { properties.endColor = endColor }
     fun gradientColors(startColor: Int, endColor: Int, centerColor: Int?) = apply {
         startColor(startColor); endColor(endColor)
@@ -54,6 +60,8 @@ class DrawableBuilder {
     fun gradientRadius(radius: Float, type: Int) = apply { gradientRadius(radius); gradientRadiusType(type) }
     fun gradientRadiusInPixel(radius: Float) = apply { gradientRadius(radius); gradientRadiusType(DrawableProperties.RADIUS_TYPE_PIXELS) }
     fun gradientRadiusInFraction(radius: Float) = apply { gradientRadius(radius); gradientRadiusType(DrawableProperties.RADIUS_TYPE_FRACTION) }
+    fun useLevelForGradient(use: Boolean) = apply { properties.useLevelForGradient = use }
+    fun useLevelForGradient() = apply { useLevelForGradient(true) }
 
     fun width(width: Int) = apply { properties.width = width }
     fun height(height: Int) = apply { properties.height = height }
@@ -201,7 +209,7 @@ class DrawableBuilder {
                 setInnerRadiusRatio(drawable, innerRadiusRatio)
                 setThickness(drawable, thickness)
                 setThicknessRatio(drawable, thicknessRatio)
-                setUseLevelForShape(drawable, false)
+                setUseLevelForShape(drawable, useLevelForRing)
             }
             drawable.cornerRadii = getCornerRadii()
             if (useGradient) {
@@ -216,6 +224,7 @@ class DrawableBuilder {
                     setOrientation(drawable, getOrientation())
                     setColors(drawable, getColors())
                 }
+                drawable.useLevel = useLevelForGradient
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     drawable.color = getSolidColorStateList()

@@ -12,6 +12,7 @@ class DrawableProperties (
         var innerRadiusRatio: Float = 9f,
         var thickness: Int = -1,
         var thicknessRatio: Float = 3f,
+        var useLevelForRing: Boolean = false,
 
         cornerRadius: Int = 0,
         var topLeftRadius: Int = 0,
@@ -30,6 +31,7 @@ class DrawableProperties (
         var endColor: Int = 0x7FFFFFFF,
         var gradientRadiusType: Int = RADIUS_TYPE_FRACTION,
         var gradientRadius: Float = 0.5f,
+        var useLevelForGradient: Boolean = false,
 
         var width: Int = -1,
         var height: Int = -1,
@@ -76,6 +78,7 @@ class DrawableProperties (
             parcel.readFloat(),
             parcel.readInt(),
             parcel.readFloat(),
+            parcel.readByte() != 0.toByte(),
             parcel.readInt(),
             parcel.readInt(),
             parcel.readInt(),
@@ -92,6 +95,7 @@ class DrawableProperties (
             parcel.readInt(),
             parcel.readInt(),
             parcel.readFloat(),
+            parcel.readByte() != 0.toByte(),
             parcel.readInt(),
             parcel.readInt(),
             parcel.readInt(),
@@ -151,6 +155,8 @@ class DrawableProperties (
         parcel.writeFloat(innerRadiusRatio)
         parcel.writeInt(thickness)
         parcel.writeFloat(thicknessRatio)
+        parcel.writeByte(if (useLevelForRing) 1 else 0)
+        parcel.writeInt(cornerRadius)
         parcel.writeInt(topLeftRadius)
         parcel.writeInt(topRightRadius)
         parcel.writeInt(bottomRightRadius)
@@ -166,6 +172,7 @@ class DrawableProperties (
         parcel.writeInt(endColor)
         parcel.writeInt(gradientRadiusType)
         parcel.writeFloat(gradientRadius)
+        parcel.writeByte(if (useLevelForGradient) 1 else 0)
         parcel.writeInt(width)
         parcel.writeInt(height)
         parcel.writeInt(solidColor)

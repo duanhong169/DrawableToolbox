@@ -1,10 +1,13 @@
 package top.defaults.drawabletoolboxapp;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import top.defaults.drawabletoolbox.DrawableBuilder;
 
@@ -15,14 +18,20 @@ public class JavaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_java);
 
-        TextView textView = findViewById(R.id.textView);
-        Drawable background = new DrawableBuilder()
+        ImageView imageView = findViewById(R.id.imageView);
+        Drawable drawable = new DrawableBuilder()
                 .ring()
+                .useLevelForRing()
                 .useGradient()
+                .useLevelForGradient()
+                .gradientType(GradientDrawable.SWEEP_GRADIENT)
                 .gradientRadiusInFraction(0.5f)
                 .useCenterColor(false)
-                .hairlineBordered()
                 .build();
-        textView.setBackgroundDrawable(background);
+        ObjectAnimator animator = ObjectAnimator.ofInt(imageView, "imageLevel", 10000, 0);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setRepeatMode(ValueAnimator.REVERSE);
+        animator.start();
+        imageView.setImageDrawable(drawable);
     }
 }
