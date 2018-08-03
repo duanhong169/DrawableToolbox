@@ -3,7 +3,6 @@ package top.defaults.drawabletoolboxapp;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +17,7 @@ public class JavaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_java);
 
-        ImageView imageView = findViewById(R.id.imageView);
+        ImageView imageView = findViewById(R.id.view);
         Drawable drawable = new DrawableBuilder()
                 .ring()
                 .useLevelForRing()

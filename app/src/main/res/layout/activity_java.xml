@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/view"
         android:layout_width="200dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1"

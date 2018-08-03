@@ -62,10 +62,10 @@ class DrawableProperties (
 
         // <scale>
         var useScale: Boolean = false,
-        var level: Int = 10000,
+        var scaleLevel: Int = 10000,
         var scaleGravity: Int = Gravity.CENTER,
-        var scaleWidth: Float = 1f,
-        var scaleHeight: Float = 1f
+        var scaleWidth: Float = 0f,
+        var scaleHeight: Float = 0f
 ) : Parcelable {
 
     companion object {

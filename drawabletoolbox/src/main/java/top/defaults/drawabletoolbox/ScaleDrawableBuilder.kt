@@ -8,8 +8,8 @@ class ScaleDrawableBuilder: DrawableWrapperBuilder<ScaleDrawableBuilder>() {
 
     private var level: Int = 10000
     private var scaleGravity = Gravity.CENTER
-    private var scaleWidth: Float = 1f
-    private var scaleHeight: Float = 1f
+    private var scaleWidth: Float = 0f
+    private var scaleHeight: Float = 0f
 
     fun level(level: Int) = apply { this.level = level }
     fun scaleGravity(gravity: Int) = apply { this.scaleGravity = gravity }

@@ -120,7 +120,7 @@ class DrawableBuilder {
     // <scale>
     fun scale(boolean: Boolean) = apply { properties.useScale = boolean }
     fun scale() = apply { scale(true) }
-    fun level(level: Int) = apply { properties.level = level }
+    fun scaleLevel(level: Int) = apply { properties.scaleLevel = level }
     fun scaleGravity(gravity: Int) = apply { properties.scaleGravity = gravity }
     fun scaleWidth(scale: Float) = apply { properties.scaleWidth = scale }
     fun scaleHeight(scale: Float) = apply { properties.scaleHeight = scale }
@@ -155,7 +155,7 @@ class DrawableBuilder {
             with(properties) {
                 drawable = ScaleDrawableBuilder()
                         .drawable(drawable)
-                        .level(level)
+                        .level(scaleLevel)
                         .scaleGravity(scaleGravity)
                         .scaleWidth(scaleWidth)
                         .scaleHeight(scaleHeight)
