@@ -11,6 +11,8 @@ class DrawableBuilder {
     private var properties = DrawableProperties()
 
     fun batch(properties: DrawableProperties) = apply { this.properties = properties.copy() }
+
+    // <shape>
     fun shape(shape: Int) = apply { properties.shape = shape }
     fun rectangle() = apply { shape(GradientDrawable.RECTANGLE) }
     fun oval() = apply { shape(GradientDrawable.OVAL) }
@@ -23,6 +25,7 @@ class DrawableBuilder {
     fun useLevelForRing(use: Boolean) = apply { properties.useLevelForRing = use }
     fun useLevelForRing() = apply { useLevelForRing(true) }
 
+    // <corner>
     fun cornerRadius(cornerRadius: Int) = apply { properties.cornerRadius = cornerRadius }
     fun topLeftRadius(topLeftRadius: Int) = apply { properties.topLeftRadius = topLeftRadius }
     fun topRightRadius(topRightRadius: Int) = apply { properties.topRightRadius = topRightRadius }
@@ -33,6 +36,7 @@ class DrawableBuilder {
         topLeftRadius(topLeftRadius); topRightRadius(topRightRadius); bottomRightRadius(bottomRightRadius); bottomLeftRadius(bottomLeftRadius)
     }
 
+    // <gradient>
     fun useGradient(useGradient: Boolean) = apply { properties.useGradient = useGradient }
     fun useGradient() = apply { useGradient(true) }
     fun gradientType(type: Int) = apply { properties.type = type }
@@ -66,10 +70,12 @@ class DrawableBuilder {
     fun useLevelForGradient(use: Boolean) = apply { properties.useLevelForGradient = use }
     fun useLevelForGradient() = apply { useLevelForGradient(true) }
 
+    // <size>
     fun width(width: Int) = apply { properties.width = width }
     fun height(height: Int) = apply { properties.height = height }
     fun size(width: Int, height: Int) = apply { width(width); height(height) }
 
+    // <solid>
     fun solidColor(solidColor: Int) = apply { properties.solidColor = solidColor }
     private var solidColorPressed: Int? = null
     fun solidColorPressed(color: Int?) = apply { solidColorPressed = color }
@@ -78,6 +84,8 @@ class DrawableBuilder {
     private var solidColorSelected: Int? = null
     fun solidColorSelected(color: Int?) = apply { solidColorSelected = color }
 
+
+    // <stroke>
     fun strokeWidth(strokeWidth: Int) = apply { properties.strokeWidth = strokeWidth }
 
     fun strokeColor(strokeColor: Int) = apply { properties.strokeColor = strokeColor }
@@ -91,11 +99,12 @@ class DrawableBuilder {
     fun dashWidth(dashWidth: Int) = apply { properties.dashWidth = dashWidth }
     fun dashGap(dashGap: Int) = apply { properties.dashGap = dashGap }
     fun hairlineBordered() = apply { strokeWidth(1) }
-    fun shortDashed() = apply { dashWidth(12); dashGap(12) }
-    fun mediumDashed() = apply { dashWidth(24); dashGap(24) }
-    fun longDashed() = apply { dashWidth(36); dashGap(36) }
+    fun shortDashed() = apply { dashWidth(12).dashGap(12) }
+    fun mediumDashed() = apply { dashWidth(24).dashGap(24) }
+    fun longDashed() = apply { dashWidth(36).dashGap(36) }
     fun dashed() = apply { mediumDashed() }
 
+    // <rotate>
     fun rotate(boolean: Boolean) = apply { properties.useRotate = boolean }
     fun rotate() = apply { rotate(true) }
     fun pivotX(pivotX: Float) = apply { properties.pivotX = pivotX }
@@ -107,6 +116,16 @@ class DrawableBuilder {
     fun degrees(degrees: Float) = apply { fromDegrees(degrees).toDegrees(degrees) }
     fun rotate(fromDegrees: Float, toDegrees: Float) = apply { rotate().fromDegrees(fromDegrees).toDegrees(toDegrees) }
     fun rotate(degrees: Float) = apply { rotate().degrees(degrees)  }
+
+    // <scale>
+    fun scale(boolean: Boolean) = apply { properties.useScale = boolean }
+    fun scale() = apply { scale(true) }
+    fun level(level: Int) = apply { properties.level = level }
+    fun scaleGravity(gravity: Int) = apply { properties.scaleGravity = gravity }
+    fun scaleWidth(scale: Float) = apply { properties.scaleWidth = scale }
+    fun scaleHeight(scale: Float) = apply { properties.scaleHeight = scale }
+    fun scale(scale: Float) = apply { scale().scaleWidth(scale).scaleHeight(scale) }
+    fun scale(scaleWidth: Float, scaleHeight: Float) = apply { scale().scaleWidth(scaleWidth).scaleHeight(scaleHeight) }
 
     fun build(): Drawable {
         var drawable: Drawable
@@ -129,6 +148,17 @@ class DrawableBuilder {
                         .pivotY(pivotY)
                         .fromDegrees(fromDegrees)
                         .toDegrees(toDegrees)
+                        .build()
+            }
+        }
+        if (needScaleDrawable()) {
+            with(properties) {
+                drawable = ScaleDrawableBuilder()
+                        .drawable(drawable)
+                        .level(level)
+                        .scaleGravity(scaleGravity)
+                        .scaleWidth(scaleWidth)
+                        .scaleHeight(scaleHeight)
                         .build()
             }
         }
@@ -279,6 +309,10 @@ class DrawableBuilder {
         return properties.useRotate &&
                 !(properties.pivotX == 0.5f && properties.pivotY == 0.5f
                         && properties.fromDegrees == 0f && properties.toDegrees == 0f)
+    }
+
+    private fun needScaleDrawable(): Boolean {
+        return properties.useScale
     }
 
     private fun hasSolidColorStateList(): Boolean {

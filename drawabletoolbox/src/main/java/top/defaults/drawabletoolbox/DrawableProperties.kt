@@ -5,8 +5,11 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Parcel
 import android.os.Parcelable
+import android.view.Gravity
 
 class DrawableProperties (
+
+        // <shape>
         var shape: Int = GradientDrawable.RECTANGLE,
         var innerRadius: Int = -1,
         var innerRadiusRatio: Float = 9f,
@@ -14,12 +17,14 @@ class DrawableProperties (
         var thicknessRatio: Float = 3f,
         var useLevelForRing: Boolean = false,
 
+        // <corner>
         cornerRadius: Int = 0,
         var topLeftRadius: Int = 0,
         var topRightRadius: Int = 0,
         var bottomRightRadius: Int = 0,
         var bottomLeftRadius: Int = 0,
 
+        // <gradient>
         var useGradient: Boolean = false,
         var type: Int = GradientDrawable.RADIAL_GRADIENT,
         var angle: Int = 0,
@@ -33,12 +38,15 @@ class DrawableProperties (
         var gradientRadius: Float = 0.5f,
         var useLevelForGradient: Boolean = false,
 
+        // <size>
         var width: Int = -1,
         var height: Int = -1,
 
+        // <solid>
         var solidColor: Int = Color.TRANSPARENT,
         var solidColorStateList: ColorStateList? = null,
 
+        // <stroke>
         var strokeWidth: Int = 0,
         var strokeColor: Int = Color.DKGRAY,
         var strokeColorStateList: ColorStateList? = null,
@@ -50,7 +58,14 @@ class DrawableProperties (
         var pivotX: Float = 0.5f,
         var pivotY: Float = 0.5f,
         var fromDegrees: Float = 0f,
-        var toDegrees: Float = 0f
+        var toDegrees: Float = 0f,
+
+        // <scale>
+        var useScale: Boolean = false,
+        var level: Int = 10000,
+        var scaleGravity: Int = Gravity.CENTER,
+        var scaleWidth: Float = 1f,
+        var scaleHeight: Float = 1f
 ) : Parcelable {
 
     companion object {

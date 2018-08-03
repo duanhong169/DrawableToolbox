@@ -10,8 +10,11 @@ import android.support.v4.content.ContextCompat
 import android.widget.Button
 import top.defaults.drawabletoolbox.DrawableBuilder
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.animation.BounceInterpolator
+import android.view.animation.LinearInterpolator
 import android.widget.ImageView
+import top.defaults.view.TextButton
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,16 +32,18 @@ class MainActivity : AppCompatActivity() {
                 .sweepGradient()
                 .gradientRadiusInFraction(0.5f)
                 .rotate(0f, 360f)
+                .scale(0.1f)
+                .scaleGravity(Gravity.START or Gravity.TOP)
                 .build()
         val animator = ObjectAnimator.ofInt(imageView, "imageLevel", 10000, 0)
         animator.repeatCount = ValueAnimator.INFINITE
         animator.repeatMode = ValueAnimator.REVERSE
         animator.duration = 3000
-        animator.interpolator = BounceInterpolator()
+        animator.interpolator = LinearInterpolator()
         animator.start()
         imageView.setImageDrawable(drawable)
 
-        val button = findViewById<Button>(R.id.javaVersion)
+        val button = findViewById<TextButton>(R.id.javaVersion)
         val backgroundDrawableBuilder = DrawableBuilder()
                 .rectangle()
                 .rounded()
