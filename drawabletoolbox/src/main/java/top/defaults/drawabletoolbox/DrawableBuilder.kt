@@ -96,8 +96,20 @@ class DrawableBuilder {
     fun longDashed() = apply { dashWidth(36); dashGap(36) }
     fun dashed() = apply { mediumDashed() }
 
+    fun rotate(boolean: Boolean) = apply { properties.useRotate = boolean }
+    fun rotate() = apply { rotate(true) }
+    fun pivotX(pivotX: Float) = apply { properties.pivotX = pivotX }
+    fun pivotY(pivotY: Float) = apply { properties.pivotY = pivotY }
+    fun pivot(pivotX: Float, pivotY: Float) = apply { pivotX(pivotX).pivotY(pivotY) }
+    fun fromDegrees(degrees: Float) = apply { properties.fromDegrees = degrees }
+    fun toDegrees(degrees: Float) = apply { properties.toDegrees = degrees }
+    fun degrees(fromDegrees: Float, toDegrees: Float) = apply { fromDegrees(fromDegrees).toDegrees(toDegrees) }
+    fun degrees(degrees: Float) = apply { fromDegrees(degrees).toDegrees(degrees) }
+    fun rotate(fromDegrees: Float, toDegrees: Float) = apply { rotate().fromDegrees(fromDegrees).toDegrees(toDegrees) }
+    fun rotate(degrees: Float) = apply { rotate().degrees(degrees)  }
+
     fun build(): Drawable {
-        val drawable: Drawable
+        var drawable: Drawable
         if (needStateListDrawable()) {
             drawable = StateListDrawableBuilder()
                     .pressed(buildPressedDrawable())
@@ -108,6 +120,17 @@ class DrawableBuilder {
         } else {
             drawable = GradientDrawable()
             setupGradientDrawable(drawable)
+        }
+        if (needRotateDrawable()) {
+            with(properties) {
+                drawable = RotateDrawableBuilder()
+                        .drawable(drawable)
+                        .pivotX(pivotX)
+                        .pivotY(pivotY)
+                        .fromDegrees(fromDegrees)
+                        .toDegrees(toDegrees)
+                        .build()
+            }
         }
         return drawable
     }
@@ -228,13 +251,8 @@ class DrawableBuilder {
                 setGradientRadiusType(drawable, gradientRadiusType)
                 setGradientRadius(drawable, gradientRadius)
                 drawable.setGradientCenter(centerX, centerY)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    drawable.orientation = getOrientation()
-                    drawable.colors = getColors()
-                } else {
-                    setOrientation(drawable, getOrientation())
-                    setColors(drawable, getColors())
-                }
+                setOrientation(drawable, getOrientation())
+                setColors(drawable, getColors())
                 drawable.useLevel = useLevelForGradient
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -255,6 +273,12 @@ class DrawableBuilder {
     private fun needStateListDrawable(): Boolean {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
                 && (hasStrokeColorStateList() || (!properties.useGradient && hasSolidColorStateList()))
+    }
+
+    private fun needRotateDrawable(): Boolean {
+        return properties.useRotate &&
+                !(properties.pivotX == 0.5f && properties.pivotY == 0.5f
+                        && properties.fromDegrees == 0f && properties.toDegrees == 0f)
     }
 
     private fun hasSolidColorStateList(): Boolean {

@@ -26,7 +26,7 @@ public class JavaActivity extends AppCompatActivity {
                 .useLevelForGradient()
                 .sweepGradient()
                 .gradientRadiusInFraction(0.5f)
-                .useCenterColor(false)
+                .rotate(-90)
                 .build();
         ObjectAnimator animator = ObjectAnimator.ofInt(imageView, "imageLevel", 10000, 0);
         animator.setRepeatCount(ValueAnimator.INFINITE);

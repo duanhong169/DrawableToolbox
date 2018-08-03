@@ -25,7 +25,7 @@ class DrawableProperties (
         var angle: Int = 0,
         var centerX: Float = 0.5f,
         var centerY: Float = 0.5f,
-        var useCenterColor: Boolean = true,
+        var useCenterColor: Boolean = false,
         var startColor: Int = DEFAULT_COLOR,
         var centerColor: Int? = null,
         var endColor: Int = 0x7FFFFFFF,
@@ -43,7 +43,14 @@ class DrawableProperties (
         var strokeColor: Int = Color.DKGRAY,
         var strokeColorStateList: ColorStateList? = null,
         var dashWidth: Int = 0,
-        var dashGap: Int = 0
+        var dashGap: Int = 0,
+
+        // <rotate>
+        var useRotate: Boolean = false,
+        var pivotX: Float = 0.5f,
+        var pivotY: Float = 0.5f,
+        var fromDegrees: Float = 0f,
+        var toDegrees: Float = 0f
 ) : Parcelable {
 
     companion object {
@@ -104,7 +111,13 @@ class DrawableProperties (
             parcel.readInt(),
             parcel.readParcelable(ColorStateList::class.java.classLoader),
             parcel.readInt(),
-            parcel.readInt())
+            parcel.readInt(),
+            parcel.readByte() != 0.toByte(),
+            parcel.readFloat(),
+            parcel.readFloat(),
+            parcel.readFloat(),
+            parcel.readFloat()) {
+    }
 
     init {
         this.cornerRadius = cornerRadius
@@ -182,6 +195,11 @@ class DrawableProperties (
         parcel.writeParcelable(strokeColorStateList, flags)
         parcel.writeInt(dashWidth)
         parcel.writeInt(dashGap)
+        parcel.writeByte(if (useRotate) 1 else 0)
+        parcel.writeFloat(pivotX)
+        parcel.writeFloat(pivotY)
+        parcel.writeFloat(fromDegrees)
+        parcel.writeFloat(toDegrees)
     }
 
     override fun describeContents(): Int {
