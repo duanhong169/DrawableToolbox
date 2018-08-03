@@ -5,10 +5,14 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.util.StateSet
+import java.util.*
+import java.util.concurrent.atomic.AtomicInteger
 
 class DrawableBuilder {
 
     private var properties = DrawableProperties()
+    private var order: AtomicInteger = AtomicInteger(1)
+    private var transfromsMap = TreeMap<Int, (Drawable) -> Drawable>()
 
     fun batch(properties: DrawableProperties) = apply { this.properties = properties.copy() }
 
@@ -105,7 +109,15 @@ class DrawableBuilder {
     fun dashed() = apply { mediumDashed() }
 
     // <rotate>
-    fun rotate(boolean: Boolean) = apply { properties.useRotate = boolean }
+    private var rotateOrder = 0
+    fun rotate(boolean: Boolean) = apply {
+        properties.useRotate = boolean
+        rotateOrder = if (boolean) {
+            order.getAndIncrement()
+        } else {
+            0
+        }
+    }
     fun rotate() = apply { rotate(true) }
     fun pivotX(pivotX: Float) = apply { properties.pivotX = pivotX }
     fun pivotY(pivotY: Float) = apply { properties.pivotY = pivotY }
@@ -118,7 +130,15 @@ class DrawableBuilder {
     fun rotate(degrees: Float) = apply { rotate().degrees(degrees)  }
 
     // <scale>
-    fun scale(boolean: Boolean) = apply { properties.useScale = boolean }
+    private var scaleOrder = 0
+    fun scale(boolean: Boolean) = apply {
+        properties.useScale = boolean
+        scaleOrder = if (boolean) {
+            order.getAndIncrement()
+        } else {
+            0
+        }
+    }
     fun scale() = apply { scale(true) }
     fun scaleLevel(level: Int) = apply { properties.scaleLevel = level }
     fun scaleGravity(gravity: Int) = apply { properties.scaleGravity = gravity }
@@ -140,28 +160,7 @@ class DrawableBuilder {
             drawable = GradientDrawable()
             setupGradientDrawable(drawable)
         }
-        if (needRotateDrawable()) {
-            with(properties) {
-                drawable = RotateDrawableBuilder()
-                        .drawable(drawable)
-                        .pivotX(pivotX)
-                        .pivotY(pivotY)
-                        .fromDegrees(fromDegrees)
-                        .toDegrees(toDegrees)
-                        .build()
-            }
-        }
-        if (needScaleDrawable()) {
-            with(properties) {
-                drawable = ScaleDrawableBuilder()
-                        .drawable(drawable)
-                        .level(scaleLevel)
-                        .scaleGravity(scaleGravity)
-                        .scaleWidth(scaleWidth)
-                        .scaleHeight(scaleHeight)
-                        .build()
-            }
-        }
+        drawable = wrap(drawable)
         return drawable
     }
 
@@ -313,6 +312,49 @@ class DrawableBuilder {
 
     private fun needScaleDrawable(): Boolean {
         return properties.useScale
+    }
+
+    private fun wrap(drawable: Drawable): Drawable {
+        var wrappedDrawable = drawable
+        if (rotateOrder > 0) {
+            transfromsMap[rotateOrder] = ::wrapRotateIfNeeded
+        }
+        if (scaleOrder > 0) {
+            transfromsMap[scaleOrder] = ::wrapScaleIfNeeded
+        }
+
+        for (action in transfromsMap.values) {
+            wrappedDrawable = action.invoke(wrappedDrawable)
+        }
+        return wrappedDrawable
+    }
+
+    private fun wrapRotateIfNeeded(drawable: Drawable): Drawable {
+        if (!needRotateDrawable()) return drawable
+
+        with(properties) {
+            return RotateDrawableBuilder()
+                    .drawable(drawable)
+                    .pivotX(pivotX)
+                    .pivotY(pivotY)
+                    .fromDegrees(fromDegrees)
+                    .toDegrees(toDegrees)
+                    .build()
+        }
+    }
+
+    private fun wrapScaleIfNeeded(drawable: Drawable): Drawable {
+        if (!needScaleDrawable()) return drawable
+
+        with(properties) {
+            return ScaleDrawableBuilder()
+                    .drawable(drawable)
+                    .level(scaleLevel)
+                    .scaleGravity(scaleGravity)
+                    .scaleWidth(scaleWidth)
+                    .scaleHeight(scaleHeight)
+                    .build()
+        }
     }
 
     private fun hasSolidColorStateList(): Boolean {
