@@ -2,6 +2,7 @@ package top.defaults.drawabletoolboxapp
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -28,9 +29,9 @@ class MainActivity : AppCompatActivity() {
                 .sweepGradient()
                 .gradientRadiusInFraction(0.5f)
                 .rotate(0f, 360f)
-                .scale(0.5f)
-                .scaleLevel(5000)
-                .scaleGravity(Gravity.CENTER)
+//                .scale(0.5f)
+//                .scaleGravity(Gravity.START or Gravity.TOP)
+                .mirror()
                 .build()
         val animator = ObjectAnimator.ofInt(drawable, "level", 10000, 0)
         animator.repeatCount = ValueAnimator.INFINITE
@@ -51,8 +52,8 @@ class MainActivity : AppCompatActivity() {
                 .solidColorSelected(ContextCompat.getColor(this, android.R.color.holo_orange_light))
                 .build())
         button.setOnClickListener {
-//            val intent = Intent(this, JavaActivity::class.java)
-//            startActivity(intent)
+            val intent = Intent(this, JavaActivity::class.java)
+            startActivity(intent)
         }
     }
 

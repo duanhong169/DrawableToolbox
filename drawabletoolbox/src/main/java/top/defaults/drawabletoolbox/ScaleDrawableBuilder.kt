@@ -16,7 +16,7 @@ class ScaleDrawableBuilder: DrawableWrapperBuilder<ScaleDrawableBuilder>() {
     fun scaleWidth(scale: Float) = apply { this.scaleWidth = scale }
     fun scaleHeight(scale: Float) = apply { this.scaleHeight = scale }
 
-    fun build(): Drawable {
+    override fun build(): Drawable {
         val scaleDrawable = ScaleDrawable(drawable, scaleGravity, scaleWidth, scaleHeight)
         scaleDrawable.level = level
         return scaleDrawable

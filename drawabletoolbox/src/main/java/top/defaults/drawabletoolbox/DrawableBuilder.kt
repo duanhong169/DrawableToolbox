@@ -147,6 +147,9 @@ class DrawableBuilder {
     fun scale(scale: Float) = apply { scale().scaleWidth(scale).scaleHeight(scale) }
     fun scale(scaleWidth: Float, scaleHeight: Float) = apply { scale().scaleWidth(scaleWidth).scaleHeight(scaleHeight) }
 
+    fun mirror(boolean: Boolean) = apply { properties.mirror = boolean }
+    fun mirror() = apply { mirror(true) }
+
     fun build(): Drawable {
         var drawable: Drawable
         if (needStateListDrawable()) {
@@ -316,6 +319,11 @@ class DrawableBuilder {
 
     private fun wrap(drawable: Drawable): Drawable {
         var wrappedDrawable = drawable
+
+        if (properties.mirror) {
+            wrappedDrawable = MirrorDrawableBuilder().drawable(wrappedDrawable).build()
+        }
+
         if (rotateOrder > 0) {
             transfromsMap[rotateOrder] = ::wrapRotateIfNeeded
         }
@@ -326,6 +334,7 @@ class DrawableBuilder {
         for (action in transfromsMap.values) {
             wrappedDrawable = action.invoke(wrappedDrawable)
         }
+
         return wrappedDrawable
     }
 

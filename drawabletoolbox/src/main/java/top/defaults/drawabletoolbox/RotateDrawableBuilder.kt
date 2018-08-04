@@ -15,7 +15,7 @@ class RotateDrawableBuilder: DrawableWrapperBuilder<RotateDrawableBuilder>() {
     fun fromDegrees(degree: Float) = apply { fromDegrees = degree }
     fun toDegrees(degree: Float) = apply { toDegrees = degree }
 
-    fun build(): Drawable {
+    override fun build(): Drawable {
         val rotateDrawable = RotateDrawable()
         drawable?.let {
             setDrawable(rotateDrawable, it)
