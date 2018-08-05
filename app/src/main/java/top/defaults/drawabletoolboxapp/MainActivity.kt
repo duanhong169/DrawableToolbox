@@ -29,9 +29,9 @@ class MainActivity : AppCompatActivity() {
                 .sweepGradient()
                 .gradientRadiusInFraction(0.5f)
                 .rotate(0f, 360f)
-//                .scale(0.5f)
-//                .scaleGravity(Gravity.START or Gravity.TOP)
-                .mirror()
+                .scale(0.5f)
+                .scaleGravity(Gravity.START or Gravity.TOP)
+                .flipVertical()
                 .build()
         val animator = ObjectAnimator.ofInt(drawable, "level", 10000, 0)
         animator.repeatCount = ValueAnimator.INFINITE

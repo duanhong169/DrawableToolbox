@@ -67,7 +67,8 @@ class DrawableProperties (
         var scaleWidth: Float = 0f,
         var scaleHeight: Float = 0f,
 
-        var mirror: Boolean = false
+        var useFlip: Boolean = false,
+        var orientation: Int = FlipDrawable.ORIENTATION_HORIZONTAL
 ) : Parcelable {
 
     companion object {
