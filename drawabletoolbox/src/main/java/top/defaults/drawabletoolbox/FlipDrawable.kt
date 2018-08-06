@@ -30,6 +30,14 @@ class FlipDrawable(private var drawable: Drawable, private var orientation: Int 
         return true
     }
 
+    override fun getIntrinsicWidth(): Int {
+        return drawable.intrinsicWidth
+    }
+
+    override fun getIntrinsicHeight(): Int {
+        return drawable.intrinsicHeight
+    }
+
     override fun setAlpha(alpha: Int) {
         drawable.alpha = alpha
     }
