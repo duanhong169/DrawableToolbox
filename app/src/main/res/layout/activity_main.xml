@@ -7,37 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <top.defaults.drawabletoolboxapp.CheckerboardRelativeLayout
-        android:id="@+id/background"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/drawableSpecList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="match_parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:layout_centerInParent="true"
-            android:layerType="software"
-            android:background="#22000000"/>
-
-    </top.defaults.drawabletoolboxapp.CheckerboardRelativeLayout>
-
-    <top.defaults.view.TextButton
-        android:id="@+id/javaVersion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:text="@string/java_version"
-        android:padding="8dp"
-        app:backgroundEffect="ripple"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/background"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
 </android.support.constraint.ConstraintLayout>
