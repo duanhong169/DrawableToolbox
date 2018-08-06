@@ -78,6 +78,7 @@ class DrawableBuilder {
     fun width(width: Int) = apply { properties.width = width }
     fun height(height: Int) = apply { properties.height = height }
     fun size(width: Int, height: Int) = apply { width(width); height(height) }
+    fun size(size: Int) = apply { width(size).height(size) }
 
     // <solid>
     fun solidColor(solidColor: Int) = apply { properties.solidColor = solidColor }
