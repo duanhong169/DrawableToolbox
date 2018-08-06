@@ -1,2 +1,1 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="top.defaults.drawabletoolbox"/>
+<manifest package="top.defaults.drawabletoolbox"/>
