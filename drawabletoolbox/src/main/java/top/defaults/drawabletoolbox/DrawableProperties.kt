@@ -75,7 +75,7 @@ class DrawableProperties (
         const val RADIUS_TYPE_PIXELS = 0
         const val RADIUS_TYPE_FRACTION = 1
 
-        internal const val DEFAULT_COLOR = 0xFF2DCFCA.toInt()
+        internal const val DEFAULT_COLOR = 0xFFBA68C8.toInt()
 
         @JvmField val CREATOR = object : Parcelable.Creator<DrawableProperties> {
             override fun createFromParcel(parcel: Parcel): DrawableProperties {
@@ -134,8 +134,7 @@ class DrawableProperties (
             parcel.readFloat(),
             parcel.readFloat(),
             parcel.readFloat(),
-            parcel.readFloat()) {
-    }
+            parcel.readFloat())
 
     init {
         this.cornerRadius = cornerRadius
