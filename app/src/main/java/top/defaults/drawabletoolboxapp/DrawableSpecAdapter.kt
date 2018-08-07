@@ -46,7 +46,7 @@ class DrawableSpecAdapter(private val drawableSpecList: List<DrawableSpec>) : Re
         private var animator: ObjectAnimator? = null
 
         init {
-            itemView.setOnClickListener { v -> onItemClickListener!!.onItemClick(v, adapterPosition) }
+            itemView.setOnClickListener { v -> onItemClickListener?.onItemClick(v, adapterPosition) }
             nameTextView = itemView.findViewById(R.id.name)
             imageViewBoard = itemView.findViewById(R.id.imageViewBoard)
             imageView = itemView.findViewById(R.id.imageView)
