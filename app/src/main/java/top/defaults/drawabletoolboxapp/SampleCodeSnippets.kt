@@ -103,7 +103,61 @@ fun samples(context: Context): List<DrawableSpec> {
                             .build()
                 }
             }).forTextView().isDarkBackground(),
-            DrawableSpec("Rotate & Scale the Ring", object: DrawableFactory {
+            DrawableSpec("Rotate & Leveled the Ring", object: DrawableFactory {
+                override fun build(): Drawable {
+                    return DrawableBuilder()
+                            .size(200)
+                            .ring()
+                            .useLevelForRing()
+                            .solidColor(COLOR_DEFAULT)
+                            .innerRadiusRatio(3f)
+                            .thicknessRatio(10f)
+                            .rotate(0f, 720f)
+                            .build()
+                }
+            }).animateReverse(),
+            DrawableSpec("Rotate & Sweep the Ring", object: DrawableFactory {
+                override fun build(): Drawable {
+                    return DrawableBuilder()
+                            .size(200)
+                            .ring()
+                            .innerRadiusRatio(3f)
+                            .thicknessRatio(10f)
+                            .gradient()
+                            .sweepGradient()
+                            .rotate(0f, 360f)
+                            .build()
+                }
+            }).animateRestart(),
+            DrawableSpec("Rotate, Sweep & Flip the Ring", object: DrawableFactory {
+                override fun build(): Drawable {
+                    return DrawableBuilder()
+                            .size(200)
+                            .ring()
+                            .innerRadiusRatio(3f)
+                            .thicknessRatio(10f)
+                            .gradient()
+                            .sweepGradient()
+                            .rotate(0f, 360f)
+                            .flip()
+                            .build()
+                }
+            }).animateRestart(),
+            DrawableSpec("Rotate, Sweep & Vertical Flip the Ring", object: DrawableFactory {
+                override fun build(): Drawable {
+                    return DrawableBuilder()
+                            .size(200)
+                            .ring()
+                            .innerRadiusRatio(3f)
+                            .thicknessRatio(10f)
+                            .gradient()
+                            .sweepGradient()
+                            .rotate(0f, 360f)
+                            .flipVertical()
+                            .build()
+                }
+            }).animateRestart(),
+            DrawableSpec("Rotate, Sweep & Scale the Ring", object: DrawableFactory {
                 override fun build(): Drawable {
                     val baseBuilder =  DrawableBuilder()
                             .size(400)
@@ -123,19 +177,7 @@ fun samples(context: Context): List<DrawableSpec> {
                             .pressed(pressedState)
                             .build()
                 }
-            }),
-            DrawableSpec("Rotate & Flip the Ring", object: DrawableFactory {
-                override fun build(): Drawable {
-                    return DrawableBuilder()
-                            .size(200)
-                            .ring()
-                            .gradient()
-                            .sweepGradient()
-                            .rotate(0f, 360f)
-                            .flipVertical()
-                            .build()
-                }
-            }),
+            }).animateReverse(),
             DrawableSpec("Oval", object: DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()

@@ -24,15 +24,16 @@
 
     </top.defaults.drawabletoolboxapp.CheckerboardRelativeLayout>
 
-    <TextView
+    <Button
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:padding="8dp"
         android:layout_gravity="center"
-        android:clickable="true"
-        android:focusable="true"/>
+        android:minHeight="0dp"
+        android:textAllCaps="false"
+        android:textAppearance="?android:attr/textAppearance"/>
 
     <TextView
         android:id="@+id/name"

@@ -65,6 +65,7 @@ class DrawableSpecAdapter(private val drawableSpecList: List<DrawableSpec>) : Re
                     nameTextView.visibility = View.VISIBLE
                     imageViewBoard.visibility = View.VISIBLE
                     imageView.setImageDrawable(drawable)
+                    imageView.setImageLevel(10000)
                 }
                 DrawableSpec.TYPE_TEXT_VIEW_BACKGROUND -> {
                     textView.visibility = View.VISIBLE
@@ -79,13 +80,15 @@ class DrawableSpecAdapter(private val drawableSpecList: List<DrawableSpec>) : Re
             animator?.run {
                 cancel()
             }
-            animator = ObjectAnimator.ofInt(drawable, "level", 10000, 0)
-            animator?.run {
-                repeatCount = ValueAnimator.INFINITE
-                repeatMode = ValueAnimator.REVERSE
-                duration = 3000
-                interpolator = LinearInterpolator()
-                start()
+            if (drawableSpec.animationRepeatMode > 0) {
+                animator = ObjectAnimator.ofInt(drawable, "level", 10000, 0)
+                animator?.run {
+                    repeatCount = ValueAnimator.INFINITE
+                    repeatMode = drawableSpec.animationRepeatMode
+                    duration = 3000
+                    interpolator = LinearInterpolator()
+                    start()
+                }
             }
         }
     }
