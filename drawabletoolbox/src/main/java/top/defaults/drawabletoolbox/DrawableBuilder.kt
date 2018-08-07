@@ -12,7 +12,7 @@ class DrawableBuilder {
 
     private var properties = DrawableProperties()
     private var order: AtomicInteger = AtomicInteger(1)
-    private var transfromsMap = TreeMap<Int, (Drawable) -> Drawable>()
+    private var transformsMap = TreeMap<Int, (Drawable) -> Drawable>()
 
     fun batch(properties: DrawableProperties) = apply { this.properties = properties.copy() }
 
@@ -26,8 +26,7 @@ class DrawableBuilder {
     fun innerRadiusRatio(innerRadiusRatio: Float) = apply { properties.innerRadiusRatio = innerRadiusRatio }
     fun thickness(thickness: Int) = apply { properties.thickness = thickness }
     fun thicknessRatio(thicknessRatio: Float) = apply { properties.thicknessRatio = thicknessRatio }
-    fun useLevelForRing(use: Boolean) = apply { properties.useLevelForRing = use }
-    fun useLevelForRing() = apply { useLevelForRing(true) }
+    @JvmOverloads fun useLevelForRing(use: Boolean = true) = apply { properties.useLevelForRing = use }
 
     // <corner>
     fun cornerRadius(cornerRadius: Int) = apply { properties.cornerRadius = cornerRadius }
@@ -41,8 +40,7 @@ class DrawableBuilder {
     }
 
     // <gradient>
-    fun useGradient(useGradient: Boolean) = apply { properties.useGradient = useGradient }
-    fun useGradient() = apply { useGradient(true) }
+    @JvmOverloads fun gradient(useGradient: Boolean = true) = apply { properties.useGradient = useGradient }
     fun gradientType(type: Int) = apply { properties.type = type }
     fun linearGradient() = apply { gradientType(GradientDrawable.LINEAR_GRADIENT) }
     fun radialGradient() = apply { gradientType(GradientDrawable.RADIAL_GRADIENT) }
@@ -51,8 +49,7 @@ class DrawableBuilder {
     fun centerX(centerX: Float) = apply { properties.centerX = centerX }
     fun centerY(centerY: Float) = apply { properties.centerY = centerY }
     fun center(centerX: Float, centerY: Float) = apply { centerX(centerX); centerY(centerY) }
-    fun useCenterColor(useCenterColor: Boolean) = apply { properties.useCenterColor = useCenterColor }
-    fun useCenterColor() = apply { useCenterColor(true) }
+    @JvmOverloads fun useCenterColor(useCenterColor: Boolean = true) = apply { properties.useCenterColor = useCenterColor }
     fun startColor(startColor: Int) = apply { properties.startColor = startColor }
     fun centerColor(centerColor: Int) = apply {
         properties.centerColor = centerColor
@@ -88,7 +85,7 @@ class DrawableBuilder {
     fun solidColorDisabled(color: Int?) = apply { solidColorDisabled = color }
     private var solidColorSelected: Int? = null
     fun solidColorSelected(color: Int?) = apply { solidColorSelected = color }
-
+    fun solidColorStateList(colorStateList: ColorStateList) = apply { properties.solidColorStateList = colorStateList }
 
     // <stroke>
     fun strokeWidth(strokeWidth: Int) = apply { properties.strokeWidth = strokeWidth }
@@ -100,6 +97,7 @@ class DrawableBuilder {
     fun strokeColorDisabled(color: Int?) = apply { strokeColorDisabled = color }
     private var strokeColorSelected: Int? = null
     fun strokeColorSelected(color: Int?) = apply { strokeColorSelected = color }
+    fun strokeColorStateList(colorStateList: ColorStateList) = apply { properties.strokeColorStateList = colorStateList }
 
     fun dashWidth(dashWidth: Int) = apply { properties.dashWidth = dashWidth }
     fun dashGap(dashGap: Int) = apply { properties.dashGap = dashGap }
@@ -111,7 +109,7 @@ class DrawableBuilder {
 
     // <rotate>
     private var rotateOrder = 0
-    fun rotate(boolean: Boolean) = apply {
+    @JvmOverloads fun rotate(boolean: Boolean = true) = apply {
         properties.useRotate = boolean
         rotateOrder = if (boolean) {
             order.getAndIncrement()
@@ -119,7 +117,6 @@ class DrawableBuilder {
             0
         }
     }
-    fun rotate() = apply { rotate(true) }
     fun pivotX(pivotX: Float) = apply { properties.pivotX = pivotX }
     fun pivotY(pivotY: Float) = apply { properties.pivotY = pivotY }
     fun pivot(pivotX: Float, pivotY: Float) = apply { pivotX(pivotX).pivotY(pivotY) }
@@ -132,7 +129,7 @@ class DrawableBuilder {
 
     // <scale>
     private var scaleOrder = 0
-    fun scale(boolean: Boolean) = apply {
+    @JvmOverloads fun scale(boolean: Boolean = true) = apply {
         properties.useScale = boolean
         scaleOrder = if (boolean) {
             order.getAndIncrement()
@@ -140,7 +137,6 @@ class DrawableBuilder {
             0
         }
     }
-    fun scale() = apply { scale(true) }
     fun scaleLevel(level: Int) = apply { properties.scaleLevel = level }
     fun scaleGravity(gravity: Int) = apply { properties.scaleGravity = gravity }
     fun scaleWidth(scale: Float) = apply { properties.scaleWidth = scale }
@@ -148,10 +144,16 @@ class DrawableBuilder {
     fun scale(scale: Float) = apply { scale().scaleWidth(scale).scaleHeight(scale) }
     fun scale(scaleWidth: Float, scaleHeight: Float) = apply { scale().scaleWidth(scaleWidth).scaleHeight(scaleHeight) }
 
-    fun flip(boolean: Boolean) = apply { properties.useFlip = boolean }
-    fun flip() = apply { flip(true) }
+    // flip
+    @JvmOverloads fun flip(boolean: Boolean = true) = apply { properties.useFlip = boolean }
     fun orientation(orientation: Int) = apply { properties.orientation = orientation }
     fun flipVertical() = apply { flip().orientation(FlipDrawable.ORIENTATION_VERTICAL) }
+
+    // <ripple>
+    @JvmOverloads fun ripple(boolean: Boolean = true) = apply { properties.useRipple = boolean }
+    fun rippleColor(color: Int) = apply { properties.rippleColor = color }
+    fun rippleColorStateList(colorStateList: ColorStateList) = apply { properties.rippleColorStateList = colorStateList }
+    fun rippleRadius(radius: Int) = apply { properties.rippleRadius = radius }
 
     fun build(): Drawable {
         var drawable: Drawable
@@ -324,13 +326,13 @@ class DrawableBuilder {
         var wrappedDrawable = drawable
 
         if (rotateOrder > 0) {
-            transfromsMap[rotateOrder] = ::wrapRotateIfNeeded
+            transformsMap[rotateOrder] = ::wrapRotateIfNeeded
         }
         if (scaleOrder > 0) {
-            transfromsMap[scaleOrder] = ::wrapScaleIfNeeded
+            transformsMap[scaleOrder] = ::wrapScaleIfNeeded
         }
 
-        for (action in transfromsMap.values) {
+        for (action in transformsMap.values) {
             wrappedDrawable = action.invoke(wrappedDrawable)
         }
 
@@ -338,6 +340,15 @@ class DrawableBuilder {
             wrappedDrawable = FlipDrawableBuilder()
                     .drawable(wrappedDrawable)
                     .orientation(properties.orientation)
+                    .build()
+        }
+
+        if (properties.useRipple) {
+            wrappedDrawable = RippleDrawableBuilder()
+                    .drawable(wrappedDrawable)
+                    .color(properties.rippleColor)
+                    .colorStateList(properties.rippleColorStateList)
+                    .radius(properties.rippleRadius)
                     .build()
         }
 

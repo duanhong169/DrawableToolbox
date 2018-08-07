@@ -69,7 +69,13 @@ class DrawableProperties (
 
         // flip
         var useFlip: Boolean = false,
-        var orientation: Int = FlipDrawable.ORIENTATION_HORIZONTAL
+        var orientation: Int = FlipDrawable.ORIENTATION_HORIZONTAL,
+
+        // ripple
+        var useRipple: Boolean = false,
+        var rippleColor: Int = Constants.DEFAULT_COLOR,
+        var rippleColorStateList: ColorStateList? = null,
+        var rippleRadius: Int = -1
 ) : Parcelable {
 
     companion object {
@@ -140,7 +146,12 @@ class DrawableProperties (
             parcel.readFloat(),
             parcel.readFloat(),
             parcel.readByte() != 0.toByte(),
-            parcel.readInt())
+            parcel.readInt(),
+            parcel.readByte() != 0.toByte(),
+            parcel.readInt(),
+            parcel.readParcelable(ColorStateList::class.java.classLoader),
+            parcel.readInt()) {
+    }
 
     init {
         this.cornerRadius = cornerRadius
@@ -230,6 +241,10 @@ class DrawableProperties (
         parcel.writeFloat(scaleHeight)
         parcel.writeByte(if (useFlip) 1 else 0)
         parcel.writeInt(orientation)
+        parcel.writeByte(if (useRipple) 1 else 0)
+        parcel.writeInt(rippleColor)
+        parcel.writeParcelable(rippleColorStateList, flags)
+        parcel.writeInt(rippleRadius)
     }
 
     override fun describeContents(): Int {

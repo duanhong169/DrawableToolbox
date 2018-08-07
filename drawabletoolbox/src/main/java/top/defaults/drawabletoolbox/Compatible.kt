@@ -2,6 +2,7 @@ package top.defaults.drawabletoolbox
 
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.RotateDrawable
 import android.os.Build
 import java.lang.reflect.Field
@@ -234,6 +235,21 @@ fun setToDegrees(rotateDrawable: RotateDrawable, value: Float) {
         try {
             val toDegreesField = resolveField(rotateState, "mToDegrees")
             toDegreesField.setFloat(rotateDrawable.constantState, value)
+        } catch (e: NoSuchFieldException) {
+            e.printStackTrace()
+        } catch (e: IllegalAccessException) {
+            e.printStackTrace()
+        }
+    }
+}
+
+fun setRadius(rippleDrawable: RippleDrawable, value: Int) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        rippleDrawable.radius = value
+    } else {
+        try {
+            val setRadiusMethod = resolveMethod(RippleDrawable::class.java, "setMaxRadius", Int::class.java)
+            setRadiusMethod.invoke(rippleDrawable, value)
         } catch (e: NoSuchFieldException) {
             e.printStackTrace()
         } catch (e: IllegalAccessException) {
