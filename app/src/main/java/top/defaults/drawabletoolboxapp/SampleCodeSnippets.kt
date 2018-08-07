@@ -8,56 +8,93 @@ import android.view.Gravity
 import top.defaults.drawabletoolbox.DrawableBuilder
 import top.defaults.drawabletoolbox.StateListDrawableBuilder
 
+const val COLOR_DEFAULT = 0xFFBA68C8.toInt()
+const val COLOR_PRESSED = 0xFFF44336.toInt()
+
 fun samples(context: Context): List<DrawableSpec> {
     return listOf(
-            DrawableSpec("Rounded Bordered", object: DrawableFactory {
+            DrawableSpec("Bordered with Ripple", object: DrawableFactory {
+                override fun build(): Drawable {
+                    return DrawableBuilder()
+                            .rectangle()
+                            .hairlineBordered()
+                            .strokeColor(COLOR_DEFAULT)
+                            .strokeColorPressed(COLOR_PRESSED)
+                            .ripple()
+                            .build()
+                }
+            }).forTextView(),
+            DrawableSpec("Filled with States", object: DrawableFactory {
+                override fun build(): Drawable {
+                    return DrawableBuilder()
+                            .rectangle()
+                            .solidColor(COLOR_DEFAULT)
+                            .solidColorPressed(COLOR_PRESSED)
+                            .build()
+                }
+            }).forTextView().isDarkBackground(),
+            DrawableSpec("Rounded, Filled with States", object: DrawableFactory {
+                override fun build(): Drawable {
+                    return DrawableBuilder()
+                            .rectangle()
+                            .rounded()
+                            .solidColor(COLOR_DEFAULT)
+                            .solidColorPressed(COLOR_PRESSED)
+                            .build()
+                }
+            }).forTextView().isDarkBackground(),
+            DrawableSpec("Rounded, Bordered with Ripple", object: DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
                             .rectangle()
                             .hairlineBordered()
                             .rounded()
-                            .strokeColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                            .strokeColorPressed(ContextCompat.getColor(context, R.color.colorAccent))
+                            .strokeColor(COLOR_DEFAULT)
+                            .strokeColorPressed(COLOR_PRESSED)
+                            .ripple()
                             .build()
                 }
             }).forTextView(),
-            DrawableSpec("Rounded Filled", object: DrawableFactory {
+            DrawableSpec("Rounded, Filled with Ripple", object: DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
                             .rectangle()
                             .rounded()
-                            .solidColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                            .solidColorPressed(ContextCompat.getColor(context, R.color.colorAccent))
+                            .solidColor(COLOR_DEFAULT)
+                            .ripple()
+                            .rippleColor(COLOR_PRESSED)
                             .build()
                 }
             }).forTextView().isDarkBackground(),
-            DrawableSpec("Rounded Gradient", object: DrawableFactory {
+            DrawableSpec("Rounded, Gradient with Ripple", object: DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
                             .rectangle()
                             .rounded()
-                            .useGradient()
+                            .gradient()
                             .gradientType(GradientDrawable.LINEAR_GRADIENT)
                             .angle(90)
-                            .startColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                            .startColor(COLOR_DEFAULT)
                             .endColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
+                            .ripple()
+                            .rippleColor(COLOR_PRESSED)
                             .build()
                 }
             }).forTextView().isDarkBackground(),
-            DrawableSpec("Rounded Gradient State", object: DrawableFactory {
+            DrawableSpec("Rounded, Gradient with States", object: DrawableFactory {
                 override fun build(): Drawable {
                     val baseBuilder = DrawableBuilder()
                             .rectangle()
                             .rounded()
-                            .useGradient()
+                            .gradient()
                             .gradientType(GradientDrawable.LINEAR_GRADIENT)
                             .angle(90)
                     val normalState = baseBuilder
-                            .startColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                            .startColor(COLOR_DEFAULT)
                             .endColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
                             .build()
                     val pressedState = baseBuilder
-                            .startColor(ContextCompat.getColor(context, R.color.colorAccent))
+                            .startColor(COLOR_PRESSED)
                             .endColor(ContextCompat.getColor(context, R.color.colorAccentDark))
                             .build()
                     return StateListDrawableBuilder()
@@ -68,14 +105,22 @@ fun samples(context: Context): List<DrawableSpec> {
             }).forTextView().isDarkBackground(),
             DrawableSpec("Rotate & Scale the Ring", object: DrawableFactory {
                 override fun build(): Drawable {
-                    return DrawableBuilder()
+                    val baseBuilder =  DrawableBuilder()
                             .size(400)
                             .ring()
-                            .useGradient()
+                            .gradient()
                             .sweepGradient()
                             .rotate(0f, 360f)
                             .scale(0.5f)
                             .scaleGravity(Gravity.START or Gravity.TOP)
+                    val normalState = baseBuilder.build()
+                    val pressedState = baseBuilder
+                            .startColor(COLOR_PRESSED)
+                            .endColor(0x7FFFFFFF)
+                            .build()
+                    return StateListDrawableBuilder()
+                            .normal(normalState)
+                            .pressed(pressedState)
                             .build()
                 }
             }),
@@ -84,7 +129,7 @@ fun samples(context: Context): List<DrawableSpec> {
                     return DrawableBuilder()
                             .size(200)
                             .ring()
-                            .useGradient()
+                            .gradient()
                             .sweepGradient()
                             .rotate(0f, 360f)
                             .flipVertical()
@@ -96,7 +141,8 @@ fun samples(context: Context): List<DrawableSpec> {
                     return DrawableBuilder()
                             .size(200)
                             .oval()
-                            .solidColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                            .solidColor(COLOR_DEFAULT)
+                            .solidColorPressed(COLOR_PRESSED)
                             .build()
                 }
             })
