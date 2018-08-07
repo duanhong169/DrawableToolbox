@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">DrawableToolbox</string>
     <string name="drawable_host">Drawable Host</string>
+    <string name="animate">Animate</string>
 </resources>

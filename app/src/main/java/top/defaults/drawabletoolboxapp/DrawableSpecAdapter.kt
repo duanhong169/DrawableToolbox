@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 
@@ -22,7 +23,7 @@ class DrawableSpecAdapter(private val drawableSpecList: List<DrawableSpec>) : Re
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val drawableSpec = drawableSpecList[position]
-        holder.bind(drawableSpec)
+        holder.bind(drawableSpec, position)
     }
 
     override fun getItemCount(): Int {
@@ -43,6 +44,7 @@ class DrawableSpecAdapter(private val drawableSpecList: List<DrawableSpec>) : Re
         private val imageViewBoard: View
         private val imageView: ImageView
         private val textView: TextView
+        private val animateCheckBox: CheckBox
         private var animator: ObjectAnimator? = null
 
         init {
@@ -51,9 +53,10 @@ class DrawableSpecAdapter(private val drawableSpecList: List<DrawableSpec>) : Re
             imageViewBoard = itemView.findViewById(R.id.imageViewBoard)
             imageView = itemView.findViewById(R.id.imageView)
             textView = itemView.findViewById(R.id.textView)
+            animateCheckBox = itemView.findViewById(R.id.animateCheckBox)
         }
 
-        fun bind(drawableSpec: DrawableSpec) {
+        fun bind(drawableSpec: DrawableSpec, position: Int) {
             nameTextView.text = drawableSpec.name
             val drawable = drawableSpec.build()
 
@@ -66,6 +69,12 @@ class DrawableSpecAdapter(private val drawableSpecList: List<DrawableSpec>) : Re
                     imageViewBoard.visibility = View.VISIBLE
                     imageView.setImageDrawable(drawable)
                     imageView.setImageLevel(10000)
+                    animateCheckBox.setOnCheckedChangeListener(null)
+                    animateCheckBox.isChecked = drawableSpec.animationEnabled
+                    animateCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                        drawableSpec.animationEnabled = isChecked
+                        notifyItemChanged(position)
+                    }
                 }
                 DrawableSpec.TYPE_TEXT_VIEW_BACKGROUND -> {
                     textView.visibility = View.VISIBLE
@@ -73,6 +82,8 @@ class DrawableSpecAdapter(private val drawableSpecList: List<DrawableSpec>) : Re
                     textView.text = drawableSpec.name
                     if (drawableSpec.isDarkBackground) {
                         textView.setTextColor(Color.WHITE)
+                    } else {
+                        textView.setTextColor(COLOR_DEFAULT_DARK)
                     }
                 }
             }
@@ -80,7 +91,7 @@ class DrawableSpecAdapter(private val drawableSpecList: List<DrawableSpec>) : Re
             animator?.run {
                 cancel()
             }
-            if (drawableSpec.animationRepeatMode > 0) {
+            if (drawableSpec.shouldAnimate()) {
                 animator = ObjectAnimator.ofInt(drawable, "level", 10000, 0)
                 animator?.run {
                     repeatCount = ValueAnimator.INFINITE

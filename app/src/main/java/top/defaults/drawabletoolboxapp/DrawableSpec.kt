@@ -7,6 +7,7 @@ class DrawableSpec(var name: String, private val factory: DrawableFactory, var t
 
     var isDarkBackground: Boolean = false
     var animationRepeatMode: Int = -1
+    var animationEnabled: Boolean = false
 
     companion object {
         const val TYPE_IMAGE_VIEW_SOURCE = 0
@@ -21,4 +22,5 @@ class DrawableSpec(var name: String, private val factory: DrawableFactory, var t
     fun isDarkBackground(boolean: Boolean = true) = apply { isDarkBackground = boolean }
     fun animateRestart() = apply { animationRepeatMode = ValueAnimator.RESTART }
     fun animateReverse() = apply { animationRepeatMode = ValueAnimator.REVERSE }
+    fun shouldAnimate(): Boolean { return animationEnabled && animationRepeatMode > 0 }
 }

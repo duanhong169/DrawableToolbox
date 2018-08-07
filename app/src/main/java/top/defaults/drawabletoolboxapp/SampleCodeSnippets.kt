@@ -9,6 +9,7 @@ import top.defaults.drawabletoolbox.DrawableBuilder
 import top.defaults.drawabletoolbox.StateListDrawableBuilder
 
 const val COLOR_DEFAULT = 0xFFBA68C8.toInt()
+const val COLOR_DEFAULT_DARK = 0xFF9C27B0.toInt()
 const val COLOR_PRESSED = 0xFFF44336.toInt()
 
 fun samples(context: Context): List<DrawableSpec> {
@@ -18,6 +19,18 @@ fun samples(context: Context): List<DrawableSpec> {
                     return DrawableBuilder()
                             .rectangle()
                             .hairlineBordered()
+                            .strokeColor(COLOR_DEFAULT)
+                            .strokeColorPressed(COLOR_PRESSED)
+                            .ripple()
+                            .build()
+                }
+            }).forTextView(),
+            DrawableSpec("Medium-dashed, Bordered with Ripple", object: DrawableFactory {
+                override fun build(): Drawable {
+                    return DrawableBuilder()
+                            .rectangle()
+                            .hairlineBordered()
+                            .mediumDashed()
                             .strokeColor(COLOR_DEFAULT)
                             .strokeColorPressed(COLOR_PRESSED)
                             .ripple()
@@ -48,6 +61,19 @@ fun samples(context: Context): List<DrawableSpec> {
                     return DrawableBuilder()
                             .rectangle()
                             .hairlineBordered()
+                            .rounded()
+                            .strokeColor(COLOR_DEFAULT)
+                            .strokeColorPressed(COLOR_PRESSED)
+                            .ripple()
+                            .build()
+                }
+            }).forTextView(),
+            DrawableSpec("Rounded, Long-dashed, Bordered with Ripple", object: DrawableFactory {
+                override fun build(): Drawable {
+                    return DrawableBuilder()
+                            .rectangle()
+                            .hairlineBordered()
+                            .longDashed()
                             .rounded()
                             .strokeColor(COLOR_DEFAULT)
                             .strokeColorPressed(COLOR_PRESSED)
