@@ -31,7 +31,7 @@ class DrawableProperties (
         var centerX: Float = 0.5f,
         var centerY: Float = 0.5f,
         var useCenterColor: Boolean = false,
-        var startColor: Int = DEFAULT_COLOR,
+        var startColor: Int = Constants.DEFAULT_COLOR,
         var centerColor: Int? = null,
         var endColor: Int = 0x7FFFFFFF,
         var gradientRadiusType: Int = RADIUS_TYPE_FRACTION,
@@ -67,6 +67,7 @@ class DrawableProperties (
         var scaleWidth: Float = 0f,
         var scaleHeight: Float = 0f,
 
+        // flip
         var useFlip: Boolean = false,
         var orientation: Int = FlipDrawable.ORIENTATION_HORIZONTAL
 ) : Parcelable {
@@ -74,8 +75,6 @@ class DrawableProperties (
     companion object {
         const val RADIUS_TYPE_PIXELS = 0
         const val RADIUS_TYPE_FRACTION = 1
-
-        internal const val DEFAULT_COLOR = 0xFFBA68C8.toInt()
 
         @JvmField val CREATOR = object : Parcelable.Creator<DrawableProperties> {
             override fun createFromParcel(parcel: Parcel): DrawableProperties {
@@ -134,7 +133,14 @@ class DrawableProperties (
             parcel.readFloat(),
             parcel.readFloat(),
             parcel.readFloat(),
-            parcel.readFloat())
+            parcel.readFloat(),
+            parcel.readByte() != 0.toByte(),
+            parcel.readInt(),
+            parcel.readInt(),
+            parcel.readFloat(),
+            parcel.readFloat(),
+            parcel.readByte() != 0.toByte(),
+            parcel.readInt())
 
     init {
         this.cornerRadius = cornerRadius
@@ -217,6 +223,13 @@ class DrawableProperties (
         parcel.writeFloat(pivotY)
         parcel.writeFloat(fromDegrees)
         parcel.writeFloat(toDegrees)
+        parcel.writeByte(if (useScale) 1 else 0)
+        parcel.writeInt(scaleLevel)
+        parcel.writeInt(scaleGravity)
+        parcel.writeFloat(scaleWidth)
+        parcel.writeFloat(scaleHeight)
+        parcel.writeByte(if (useFlip) 1 else 0)
+        parcel.writeInt(orientation)
     }
 
     override fun describeContents(): Int {
