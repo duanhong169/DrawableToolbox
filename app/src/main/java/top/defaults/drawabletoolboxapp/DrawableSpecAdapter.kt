@@ -8,9 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
-import android.widget.CheckBox
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
+import top.defaults.drawabletoolboxapp.spec.DrawableSpec
+import top.defaults.drawabletoolboxapp.spec.ImageViewSourceDrawableSpec
+import top.defaults.drawabletoolboxapp.spec.SegmentedControlDrawableSpec
+import top.defaults.drawabletoolboxapp.spec.TextViewBackgroundDrawableSpec
 
 class DrawableSpecAdapter(private val drawableSpecList: List<DrawableSpec>) : RecyclerView.Adapter<DrawableSpecAdapter.ViewHolder>() {
 
@@ -22,12 +24,15 @@ class DrawableSpecAdapter(private val drawableSpecList: List<DrawableSpec>) : Re
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val drawableSpec = drawableSpecList[position]
-        holder.bind(drawableSpec, position)
+        holder.bind(getItem(position), position)
     }
 
     override fun getItemCount(): Int {
         return drawableSpecList.size
+    }
+
+    private fun getItem(position: Int): DrawableSpec {
+        return drawableSpecList[position]
     }
 
     interface OnItemClickListener {
@@ -43,8 +48,9 @@ class DrawableSpecAdapter(private val drawableSpecList: List<DrawableSpec>) : Re
         private val nameTextView: TextView
         private val imageViewBoard: View
         private val imageView: ImageView
-        private val textView: TextView
         private val animateCheckBox: CheckBox
+        private val button: TextView
+        private val segmentedControl: LinearLayout
         private var animator: ObjectAnimator? = null
 
         init {
@@ -52,19 +58,25 @@ class DrawableSpecAdapter(private val drawableSpecList: List<DrawableSpec>) : Re
             nameTextView = itemView.findViewById(R.id.name)
             imageViewBoard = itemView.findViewById(R.id.imageViewBoard)
             imageView = itemView.findViewById(R.id.imageView)
-            textView = itemView.findViewById(R.id.textView)
             animateCheckBox = itemView.findViewById(R.id.animateCheckBox)
+            button = itemView.findViewById(R.id.button)
+            segmentedControl = itemView.findViewById(R.id.segmentedControl)
         }
 
         fun bind(drawableSpec: DrawableSpec, position: Int) {
-            nameTextView.text = drawableSpec.name
-            val drawable = drawableSpec.build()
+            animator?.run {
+                cancel()
+            }
 
+            nameTextView.text = drawableSpec.name
             nameTextView.visibility = View.GONE
             imageViewBoard.visibility = View.GONE
-            textView.visibility = View.GONE
-            when (drawableSpec.type) {
-                DrawableSpec.TYPE_IMAGE_VIEW_SOURCE -> {
+            button.visibility = View.GONE
+            segmentedControl.visibility = View.GONE
+            when (drawableSpec) {
+                is ImageViewSourceDrawableSpec -> {
+                    val drawable = drawableSpec.build()
+
                     nameTextView.visibility = View.VISIBLE
                     imageViewBoard.visibility = View.VISIBLE
                     imageView.setImageDrawable(drawable)
@@ -78,30 +90,45 @@ class DrawableSpecAdapter(private val drawableSpecList: List<DrawableSpec>) : Re
                             notifyItemChanged(position)
                         }
                     }
-                }
-                DrawableSpec.TYPE_TEXT_VIEW_BACKGROUND -> {
-                    textView.visibility = View.VISIBLE
-                    textView.setBackgroundDrawable(drawable)
-                    textView.text = drawableSpec.name
-                    if (drawableSpec.isDarkBackground) {
-                        textView.setTextColor(Color.WHITE)
-                    } else {
-                        textView.setTextColor(COLOR_DEFAULT_DARK)
+
+                    if (drawableSpec.shouldAnimate()) {
+                        animator = ObjectAnimator.ofInt(drawable, "level", 10000, 0)
+                        animator?.run {
+                            repeatCount = ValueAnimator.INFINITE
+                            repeatMode = drawableSpec.animationRepeatMode
+                            duration = 3000
+                            interpolator = LinearInterpolator()
+                            start()
+                        }
                     }
                 }
-            }
-
-            animator?.run {
-                cancel()
-            }
-            if (drawableSpec.shouldAnimate()) {
-                animator = ObjectAnimator.ofInt(drawable, "level", 10000, 0)
-                animator?.run {
-                    repeatCount = ValueAnimator.INFINITE
-                    repeatMode = drawableSpec.animationRepeatMode
-                    duration = 3000
-                    interpolator = LinearInterpolator()
-                    start()
+                is TextViewBackgroundDrawableSpec -> {
+                    button.visibility = View.VISIBLE
+                    button.setBackgroundDrawable(drawableSpec.build())
+                    button.text = drawableSpec.name
+                    if (drawableSpec.isDarkBackground) {
+                        button.setTextColor(Color.WHITE)
+                    } else {
+                        button.setTextColor(COLOR_DEFAULT_DARK)
+                    }
+                }
+                is SegmentedControlDrawableSpec -> {
+                    segmentedControl.visibility = View.VISIBLE
+                    val itemCount = segmentedControl.childCount
+                    for (i in 0 until itemCount) {
+                        val textView = segmentedControl.getChildAt(i) as TextView
+                        textView.setBackgroundDrawable(drawableSpec.build(i))
+                        textView.isSelected = i == drawableSpec.selectedIndex
+                        if (i == drawableSpec.selectedIndex) {
+                            textView.setTextColor(Color.WHITE)
+                        } else {
+                            textView.setTextColor(COLOR_DEFAULT_DARK)
+                        }
+                        textView.setOnClickListener {
+                            drawableSpec.selectedIndex = i
+                            notifyItemChanged(position)
+                        }
+                    }
                 }
             }
         }

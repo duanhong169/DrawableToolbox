@@ -7,6 +7,10 @@ import android.support.v4.content.ContextCompat
 import android.view.Gravity
 import top.defaults.drawabletoolbox.DrawableBuilder
 import top.defaults.drawabletoolbox.StateListDrawableBuilder
+import top.defaults.drawabletoolboxapp.spec.DrawableSpec
+import top.defaults.drawabletoolboxapp.spec.ImageViewSourceDrawableSpec
+import top.defaults.drawabletoolboxapp.spec.SegmentedControlDrawableSpec
+import top.defaults.drawabletoolboxapp.spec.TextViewBackgroundDrawableSpec
 
 const val COLOR_DEFAULT = 0xFFBA68C8.toInt()
 const val COLOR_DEFAULT_DARK = 0xFF9C27B0.toInt()
@@ -14,7 +18,7 @@ const val COLOR_PRESSED = 0xFFF44336.toInt()
 
 fun samples(context: Context): List<DrawableSpec> {
     return listOf(
-            DrawableSpec("Bordered with Ripple", object: DrawableFactory {
+            TextViewBackgroundDrawableSpec("Bordered with Ripple", object : DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
                             .rectangle()
@@ -24,8 +28,8 @@ fun samples(context: Context): List<DrawableSpec> {
                             .ripple()
                             .build()
                 }
-            }).forTextView(),
-            DrawableSpec("Medium-dashed, Bordered with Ripple", object: DrawableFactory {
+            }),
+            TextViewBackgroundDrawableSpec("Medium-dashed, Bordered with Ripple", object : DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
                             .rectangle()
@@ -36,8 +40,8 @@ fun samples(context: Context): List<DrawableSpec> {
                             .ripple()
                             .build()
                 }
-            }).forTextView(),
-            DrawableSpec("Filled with States", object: DrawableFactory {
+            }),
+            TextViewBackgroundDrawableSpec("Filled with States", object : DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
                             .rectangle()
@@ -45,8 +49,8 @@ fun samples(context: Context): List<DrawableSpec> {
                             .solidColorPressed(COLOR_PRESSED)
                             .build()
                 }
-            }).forTextView().isDarkBackground(),
-            DrawableSpec("Rounded, Filled with States", object: DrawableFactory {
+            }).isDarkBackground(),
+            TextViewBackgroundDrawableSpec("Rounded, Filled with States", object : DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
                             .rectangle()
@@ -55,8 +59,8 @@ fun samples(context: Context): List<DrawableSpec> {
                             .solidColorPressed(COLOR_PRESSED)
                             .build()
                 }
-            }).forTextView().isDarkBackground(),
-            DrawableSpec("Rounded, Bordered with Ripple", object: DrawableFactory {
+            }).isDarkBackground(),
+            TextViewBackgroundDrawableSpec("Rounded, Bordered with Ripple", object : DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
                             .rectangle()
@@ -67,8 +71,8 @@ fun samples(context: Context): List<DrawableSpec> {
                             .ripple()
                             .build()
                 }
-            }).forTextView(),
-            DrawableSpec("Rounded, Long-dashed, Bordered with Ripple", object: DrawableFactory {
+            }),
+            TextViewBackgroundDrawableSpec("Rounded, Long-dashed, Bordered with Ripple", object : DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
                             .rectangle()
@@ -80,8 +84,8 @@ fun samples(context: Context): List<DrawableSpec> {
                             .ripple()
                             .build()
                 }
-            }).forTextView(),
-            DrawableSpec("Rounded, Filled with Ripple", object: DrawableFactory {
+            }),
+            TextViewBackgroundDrawableSpec("Rounded, Filled with Ripple", object : DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
                             .rectangle()
@@ -91,8 +95,8 @@ fun samples(context: Context): List<DrawableSpec> {
                             .rippleColor(COLOR_PRESSED)
                             .build()
                 }
-            }).forTextView().isDarkBackground(),
-            DrawableSpec("Rounded, Gradient with Ripple", object: DrawableFactory {
+            }).isDarkBackground(),
+            TextViewBackgroundDrawableSpec("Rounded, Gradient with Ripple", object : DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
                             .rectangle()
@@ -106,8 +110,8 @@ fun samples(context: Context): List<DrawableSpec> {
                             .rippleColor(COLOR_PRESSED)
                             .build()
                 }
-            }).forTextView().isDarkBackground(),
-            DrawableSpec("Rounded, Gradient with States", object: DrawableFactory {
+            }).isDarkBackground(),
+            TextViewBackgroundDrawableSpec("Rounded, Gradient with States", object : DrawableFactory {
                 override fun build(): Drawable {
                     val baseBuilder = DrawableBuilder()
                             .rectangle()
@@ -128,8 +132,45 @@ fun samples(context: Context): List<DrawableSpec> {
                             .pressed(pressedState)
                             .build()
                 }
-            }).forTextView().isDarkBackground(),
-            DrawableSpec("Rotate & Leveled the Ring", object: DrawableFactory {
+            }).isDarkBackground(),
+            SegmentedControlDrawableSpec("Segmented Control", object : DrawableFactory {
+
+                override fun build(): Drawable = throw RuntimeException("Unsupported build with no index")
+
+                override fun build(drawableSpec: DrawableSpec, index: Int): Drawable {
+                    if (drawableSpec is SegmentedControlDrawableSpec) {
+                        val type = drawableSpec.getType(index)
+
+                        val baseBuilder = DrawableBuilder()
+                                .rectangle()
+                                .rounded()
+                                .hairlineBordered()
+                                .strokeColor(COLOR_DEFAULT)
+                                .solidColorSelected(COLOR_DEFAULT)
+                                .ripple()
+
+                        return when(type) {
+                            SegmentedControlDrawableSpec.TYPE_LEFT_MOST -> {
+                                baseBuilder.topRightRadius(0)
+                                        .bottomRightRadius(0)
+                                        .build()
+                            }
+                            SegmentedControlDrawableSpec.TYPE_RIGHT_MOST -> {
+                                baseBuilder.topLeftRadius(0)
+                                        .bottomLeftRadius(0)
+                                        .build()
+                            }
+                            else -> {
+                                baseBuilder.cornerRadius(0).build()
+                            }
+                        }
+                    } else {
+                        throw RuntimeException("Unsupported drawableSpec")
+                    }
+                }
+
+            }),
+            ImageViewSourceDrawableSpec("Rotate & Leveled the Ring", object : DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
                             .size(200)
@@ -142,7 +183,7 @@ fun samples(context: Context): List<DrawableSpec> {
                             .build()
                 }
             }).animateReverse().initialLevel(5000),
-            DrawableSpec("Rotate & Sweep the Ring", object: DrawableFactory {
+            ImageViewSourceDrawableSpec("Rotate & Sweep the Ring", object : DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
                             .size(200)
@@ -155,7 +196,7 @@ fun samples(context: Context): List<DrawableSpec> {
                             .build()
                 }
             }).animateRestart(),
-            DrawableSpec("Rotate, Sweep & Flip the Ring", object: DrawableFactory {
+            ImageViewSourceDrawableSpec("Rotate, Sweep & Flip the Ring", object : DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
                             .size(200)
@@ -169,7 +210,7 @@ fun samples(context: Context): List<DrawableSpec> {
                             .build()
                 }
             }).animateRestart(),
-            DrawableSpec("Rotate, Sweep & Vertical Flip the Ring", object: DrawableFactory {
+            ImageViewSourceDrawableSpec("Rotate, Sweep & Vertical Flip the Ring", object : DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
                             .size(200)
@@ -183,11 +224,11 @@ fun samples(context: Context): List<DrawableSpec> {
                             .build()
                 }
             }).animateRestart(),
-            DrawableSpec("Rotate, Sweep & Scale the Ring", object: DrawableFactory {
+            ImageViewSourceDrawableSpec("Rotate, Sweep & Scale the Oval with States", object : DrawableFactory {
                 override fun build(): Drawable {
-                    val baseBuilder =  DrawableBuilder()
+                    val baseBuilder = DrawableBuilder()
                             .size(400)
-                            .ring()
+                            .oval()
                             .gradient()
                             .sweepGradient()
                             .rotate(0f, 360f)
@@ -204,7 +245,7 @@ fun samples(context: Context): List<DrawableSpec> {
                             .build()
                 }
             }).animateReverse(),
-            DrawableSpec("Oval with States", object: DrawableFactory {
+            ImageViewSourceDrawableSpec("Oval with States", object : DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
                             .size(200)
@@ -214,7 +255,7 @@ fun samples(context: Context): List<DrawableSpec> {
                             .build()
                 }
             }),
-            DrawableSpec("Oval with Radial", object: DrawableFactory {
+            ImageViewSourceDrawableSpec("Oval with Radial", object : DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
                             .size(200)

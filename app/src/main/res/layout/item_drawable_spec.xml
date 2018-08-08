@@ -10,6 +10,7 @@
         android:id="@+id/imageViewBoard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:padding="8dp">
 
         <CheckBox
@@ -40,7 +41,7 @@
     </top.defaults.drawabletoolboxapp.CheckerboardRelativeLayout>
 
     <Button
-        android:id="@+id/textView"
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -49,6 +50,45 @@
         android:minHeight="0dp"
         android:textAllCaps="false"
         android:textAppearance="?android:attr/textAppearance"/>
+
+    <LinearLayout
+        android:id="@+id/segmentedControl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/segment1"
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/item_1"/>
+
+        <TextView
+            android:id="@+id/segment2"
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/item_2"/>
+
+        <TextView
+            android:id="@+id/segment3"
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/item_3"/>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/name"
