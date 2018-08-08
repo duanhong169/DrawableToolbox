@@ -98,7 +98,7 @@ fun samples(context: Context): List<DrawableSpec> {
                             .rectangle()
                             .rounded()
                             .gradient()
-                            .gradientType(GradientDrawable.LINEAR_GRADIENT)
+                            .linearGradient()
                             .angle(90)
                             .startColor(COLOR_DEFAULT)
                             .endColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
@@ -141,7 +141,7 @@ fun samples(context: Context): List<DrawableSpec> {
                             .rotate(0f, 720f)
                             .build()
                 }
-            }).animateReverse(),
+            }).animateReverse().initialLevel(5000),
             DrawableSpec("Rotate & Sweep the Ring", object: DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
@@ -204,13 +204,23 @@ fun samples(context: Context): List<DrawableSpec> {
                             .build()
                 }
             }).animateReverse(),
-            DrawableSpec("Oval", object: DrawableFactory {
+            DrawableSpec("Oval with States", object: DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
                             .size(200)
                             .oval()
                             .solidColor(COLOR_DEFAULT)
                             .solidColorPressed(COLOR_PRESSED)
+                            .build()
+                }
+            }),
+            DrawableSpec("Oval with Radial", object: DrawableFactory {
+                override fun build(): Drawable {
+                    return DrawableBuilder()
+                            .size(200)
+                            .oval()
+                            .gradient()
+                            .radialGradient()
                             .build()
                 }
             })

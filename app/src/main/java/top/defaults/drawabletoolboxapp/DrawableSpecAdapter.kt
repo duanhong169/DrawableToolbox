@@ -68,12 +68,15 @@ class DrawableSpecAdapter(private val drawableSpecList: List<DrawableSpec>) : Re
                     nameTextView.visibility = View.VISIBLE
                     imageViewBoard.visibility = View.VISIBLE
                     imageView.setImageDrawable(drawable)
-                    imageView.setImageLevel(10000)
-                    animateCheckBox.setOnCheckedChangeListener(null)
-                    animateCheckBox.isChecked = drawableSpec.animationEnabled
-                    animateCheckBox.setOnCheckedChangeListener { _, isChecked ->
-                        drawableSpec.animationEnabled = isChecked
-                        notifyItemChanged(position)
+                    imageView.setImageLevel(drawableSpec.initialLevel)
+                    animateCheckBox.visibility = if (drawableSpec.canAnimate()) View.VISIBLE else View.INVISIBLE
+                    if (drawableSpec.canAnimate()) {
+                        animateCheckBox.setOnCheckedChangeListener(null)
+                        animateCheckBox.isChecked = drawableSpec.animationEnabled
+                        animateCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                            drawableSpec.animationEnabled = isChecked
+                            notifyItemChanged(position)
+                        }
                     }
                 }
                 DrawableSpec.TYPE_TEXT_VIEW_BACKGROUND -> {
