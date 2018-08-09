@@ -250,7 +250,7 @@ Result:
 
 ![Rotate, Sweep & Scale the Oval with States](art/sample-13.png)
 
-Please check out the app sample code for more details.
+Please check out the app sample code [SampleCodeSnippets.kt](https://github.com/duanhong169/DrawableToolbox/blob/master/app/src/main/java/top/defaults/drawabletoolboxapp/SampleCodeSnippets.kt) for more details.
 
 ## License
 
