@@ -4,22 +4,23 @@
 <a target="_blank" href="https://android-arsenal.com/api?level=14"><img src="https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat"></a>
 [![license](https://img.shields.io/badge/license-Apache%202-green.svg)](https://github.com/duanhong169/DrawableToolbox/blob/master/LICENSE)
 
-English | [中文](README_cn.md)
+[English](README.md) | 中文
 
-The missing DrawableToolbox for Android. Get rid of the boring and always repeated `drawable.xml` files.
+功能完备的Drawable工具箱，通过代码构建种类多样的Drawable，摆脱枯燥重复的`drawable.xml`文件。
 
 <img src='art/screen-shot-1.jpg' height='500px'/> <img src='art/screen-video-1.gif' height='500px'/> <br/>
 <img src='art/screen-shot-2.jpg' height='500px'/> <img src='art/screen-video-2.gif' height='500px'/>
 
-## Features
+## 功能
 
-* Create drawables programmatically
-* Support `<shape>`, `<rotate>`, `<scale>`, `<ripple>` drawables
+* 通过代码构建Drawable
+* 支持`<shape>`, `<rotate>`, `<scale>`, `<ripple>`等类型的drawable
+* 支持镜面翻转
 
-## Future works
+## 即将支持
 
-* Support `LayerDrawable `(`<layer-list>`)
-* Please file an issue
+* `LayerDrawable `(`<layer-list>`)
+* 如果你有需要的功能，请提[Issue](https://github.com/duanhong169/DrawableToolbox/issues)或[Pull request](https://github.com/duanhong169/DrawableToolbox/pulls)
 
 ## Gradle
 
@@ -30,17 +31,17 @@ dependencies {
 }
 ```
 
-> Replace `${latestVersion}` with the latest version code. See [releases](https://github.com/duanhong169/DrawableToolbox/releases).
+> 将上方的`${latestVersion}`替换为当前最新的版本号，最新版本号参见[releases](https://github.com/duanhong169/DrawableToolbox/releases)。
 
-## Usage
+## 使用说明
 
-Use the `DrawableBuilder` to setup the `Drawable` and call `build()` to create it. 
+通过`DrawableBuilder`来配置`Drawable`， 然后使用`build()`构建得到`Drawable`对象。
 
-> Please check all the supported APIs in [DrawableBuilder.kt](https://github.com/duanhong169/DrawableToolbox/blob/master/drawabletoolbox/src/main/java/top/defaults/drawabletoolbox/DrawableBuilder.kt).
+> 完整支持的API请参见[DrawableBuilder.kt](https://github.com/duanhong169/DrawableToolbox/blob/master/drawabletoolbox/src/main/java/top/defaults/drawabletoolbox/DrawableBuilder.kt)。
 
-Here are some examples:
+如下是一些示例代码和对应得到的`Drawable`：
 
-Code:
+代码：
 
 ```java
 DrawableBuilder()
@@ -52,11 +53,11 @@ DrawableBuilder()
         .build()
 ```
 
-Result:
+结果：
 
 ![Bordered with Ripple](art/sample-1.png)
 
-Code:
+代码：
 
 ```java
 DrawableBuilder()
@@ -69,11 +70,11 @@ DrawableBuilder()
         .build()
 ```
 
-Result:
+结果：
 
 ![Medium-dashed, Bordered with Ripple](art/sample-2.png)
 
-Code:
+代码：
 
 ```java
 DrawableBuilder()
@@ -84,11 +85,11 @@ DrawableBuilder()
         .build()
 ```
 
-Result:
+结果：
 
 ![Rounded, Filled with States](art/sample-4.png)
 
-Code:
+代码：
 
 ```java
 DrawableBuilder()
@@ -102,11 +103,11 @@ DrawableBuilder()
         .build()
 ```
 
-Result:
+结果：
 
 ![Rounded, Long-dashed, Bordered with Ripple](art/sample-6.png)
 
-Code:
+代码：
 
 ```java
 DrawableBuilder()
@@ -122,11 +123,11 @@ DrawableBuilder()
         .build()
 ```
 
-Result:
+结果：
 
 ![Rounded, Gradient with Ripple](art/sample-8.png)
 
-Code:
+代码：
 
 ```java
 val baseBuilder = DrawableBuilder()
@@ -150,11 +151,11 @@ StateListDrawableBuilder()
         .build()
 ```
 
-Result:
+结果：
 
 ![Rounded, Gradient with States](art/sample-9.png)
 
-Code:
+代码：
 
 ```java
 val baseBuilder = DrawableBuilder()
@@ -182,11 +183,11 @@ return when(type) {
 }
 ```
 
-Result:
+结果：
 
 ![Segmented Control](art/sample-10.png)
 
-Code:
+代码：
 
 ```java
 // Rotate & Leveled the Ring
@@ -201,11 +202,11 @@ DrawableBuilder()
         .build()
 ```
 
-Result:
+结果：
 
 ![Rotate & Leveled the Ring](art/sample-11.png)
 
-Code:
+代码：
 
 ```java
 // Rotate, Sweep & Flip the Ring
@@ -221,11 +222,11 @@ DrawableBuilder()
         .build()
 ```
 
-Result:
+结果：
 
 ![Rotate, Sweep & Flip the Ring](art/sample-12.png)
 
-Code:
+代码：
 
 ```java
 // Rotate, Sweep & Scale the Oval with States
@@ -248,11 +249,11 @@ StateListDrawableBuilder()
         .build()
 ```
 
-Result:
+结果：
 
 ![Rotate, Sweep & Scale the Oval with States](art/sample-13.png)
 
-Please check out the app sample code [SampleCodeSnippets.kt](https://github.com/duanhong169/DrawableToolbox/blob/master/app/src/main/java/top/defaults/drawabletoolboxapp/SampleCodeSnippets.kt) for more details.
+更多的代码示例请查看[SampleCodeSnippets.kt](https://github.com/duanhong169/DrawableToolbox/blob/master/app/src/main/java/top/defaults/drawabletoolboxapp/SampleCodeSnippets.kt)。
 
 ## License
 
