@@ -43,7 +43,7 @@ dependencies {
 
 代码：
 
-```java
+```kotlin
 DrawableBuilder()
         .rectangle()
         .hairlineBordered()
@@ -59,7 +59,7 @@ DrawableBuilder()
 
 代码：
 
-```java
+```kotlin
 DrawableBuilder()
         .rectangle()
         .hairlineBordered()
@@ -76,7 +76,7 @@ DrawableBuilder()
 
 代码：
 
-```java
+```kotlin
 DrawableBuilder()
         .rectangle()
         .rounded()
@@ -91,7 +91,7 @@ DrawableBuilder()
 
 代码：
 
-```java
+```kotlin
 DrawableBuilder()
         .rectangle()
         .hairlineBordered()
@@ -109,7 +109,7 @@ DrawableBuilder()
 
 代码：
 
-```java
+```kotlin
 DrawableBuilder()
         .rectangle()
         .rounded()
@@ -129,7 +129,7 @@ DrawableBuilder()
 
 代码：
 
-```java
+```kotlin
 val baseBuilder = DrawableBuilder()
         .rectangle()
         .rounded()
@@ -157,7 +157,7 @@ StateListDrawableBuilder()
 
 代码：
 
-```java
+```kotlin
 val baseBuilder = DrawableBuilder()
         .rectangle()
         .rounded()
@@ -189,7 +189,7 @@ return when(type) {
 
 代码：
 
-```java
+```kotlin
 // Rotate & Leveled the Ring
 DrawableBuilder()
         .size(200)
@@ -208,7 +208,7 @@ DrawableBuilder()
 
 代码：
 
-```java
+```kotlin
 // Rotate, Sweep & Flip the Ring
 DrawableBuilder()
         .size(200)
@@ -228,7 +228,7 @@ DrawableBuilder()
 
 代码：
 
-```java
+```kotlin
 // Rotate, Sweep & Scale the Oval with States
 val baseBuilder = DrawableBuilder()
         .size(400)
@@ -257,16 +257,16 @@ StateListDrawableBuilder()
 
 ## License
 
-   Copyright 2018 Hong Duan
+    Copyright 2018 Hong Duan
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+        http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.

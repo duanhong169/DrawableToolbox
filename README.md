@@ -42,7 +42,7 @@ Here are some examples:
 
 Code:
 
-```java
+```kotlin
 DrawableBuilder()
         .rectangle()
         .hairlineBordered()
@@ -58,7 +58,7 @@ Result:
 
 Code:
 
-```java
+```kotlin
 DrawableBuilder()
         .rectangle()
         .hairlineBordered()
@@ -75,7 +75,7 @@ Result:
 
 Code:
 
-```java
+```kotlin
 DrawableBuilder()
         .rectangle()
         .rounded()
@@ -90,7 +90,7 @@ Result:
 
 Code:
 
-```java
+```kotlin
 DrawableBuilder()
         .rectangle()
         .hairlineBordered()
@@ -108,7 +108,7 @@ Result:
 
 Code:
 
-```java
+```kotlin
 DrawableBuilder()
         .rectangle()
         .rounded()
@@ -128,7 +128,7 @@ Result:
 
 Code:
 
-```java
+```kotlin
 val baseBuilder = DrawableBuilder()
         .rectangle()
         .rounded()
@@ -156,7 +156,7 @@ Result:
 
 Code:
 
-```java
+```kotlin
 val baseBuilder = DrawableBuilder()
         .rectangle()
         .rounded()
@@ -188,7 +188,7 @@ Result:
 
 Code:
 
-```java
+```kotlin
 // Rotate & Leveled the Ring
 DrawableBuilder()
         .size(200)
@@ -207,7 +207,7 @@ Result:
 
 Code:
 
-```java
+```kotlin
 // Rotate, Sweep & Flip the Ring
 DrawableBuilder()
         .size(200)
@@ -227,7 +227,7 @@ Result:
 
 Code:
 
-```java
+```kotlin
 // Rotate, Sweep & Scale the Oval with States
 val baseBuilder = DrawableBuilder()
         .size(400)
