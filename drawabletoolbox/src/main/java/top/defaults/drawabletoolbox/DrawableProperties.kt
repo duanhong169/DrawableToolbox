@@ -2,80 +2,81 @@ package top.defaults.drawabletoolbox
 
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Parcel
 import android.os.Parcelable
 import android.view.Gravity
 
-class DrawableProperties (
+data class DrawableProperties (
 
         // <shape>
-        var shape: Int = GradientDrawable.RECTANGLE,
-        var innerRadius: Int = -1,
-        var innerRadiusRatio: Float = 9f,
-        var thickness: Int = -1,
-        var thicknessRatio: Float = 3f,
-        var useLevelForRing: Boolean = false,
+        @JvmField var shape: Int = GradientDrawable.RECTANGLE,
+        @JvmField var innerRadius: Int = -1,
+        @JvmField var innerRadiusRatio: Float = 9f,
+        @JvmField var thickness: Int = -1,
+        @JvmField var thicknessRatio: Float = 3f,
+        @JvmField var useLevelForRing: Boolean = false,
 
         // <corner>
-        cornerRadius: Int = 0,
-        var topLeftRadius: Int = 0,
-        var topRightRadius: Int = 0,
-        var bottomRightRadius: Int = 0,
-        var bottomLeftRadius: Int = 0,
+        private var _cornerRadius: Int = 0,
+        @JvmField var topLeftRadius: Int = 0,
+        @JvmField var topRightRadius: Int = 0,
+        @JvmField var bottomRightRadius: Int = 0,
+        @JvmField var bottomLeftRadius: Int = 0,
 
         // <gradient>
-        var useGradient: Boolean = false,
-        var type: Int = GradientDrawable.RADIAL_GRADIENT,
-        var angle: Int = 0,
-        var centerX: Float = 0.5f,
-        var centerY: Float = 0.5f,
-        var useCenterColor: Boolean = false,
-        var startColor: Int = Constants.DEFAULT_COLOR,
-        var centerColor: Int? = null,
-        var endColor: Int = 0x7FFFFFFF,
-        var gradientRadiusType: Int = RADIUS_TYPE_FRACTION,
-        var gradientRadius: Float = 0.5f,
-        var useLevelForGradient: Boolean = false,
+        @JvmField var useGradient: Boolean = false,
+        @JvmField var type: Int = GradientDrawable.RADIAL_GRADIENT,
+        @JvmField var angle: Int = 0,
+        @JvmField var centerX: Float = 0.5f,
+        @JvmField var centerY: Float = 0.5f,
+        @JvmField var useCenterColor: Boolean = false,
+        @JvmField var startColor: Int = Constants.DEFAULT_COLOR,
+        @JvmField var centerColor: Int? = null,
+        @JvmField var endColor: Int = 0x7FFFFFFF,
+        @JvmField var gradientRadiusType: Int = RADIUS_TYPE_FRACTION,
+        @JvmField var gradientRadius: Float = 0.5f,
+        @JvmField var useLevelForGradient: Boolean = false,
 
         // <size>
-        var width: Int = -1,
-        var height: Int = -1,
+        @JvmField var width: Int = -1,
+        @JvmField var height: Int = -1,
 
         // <solid>
-        var solidColor: Int = Color.TRANSPARENT,
-        var solidColorStateList: ColorStateList? = null,
+        @JvmField var solidColor: Int = Color.TRANSPARENT,
+        @JvmField var solidColorStateList: ColorStateList? = null,
 
         // <stroke>
-        var strokeWidth: Int = 0,
-        var strokeColor: Int = Color.DKGRAY,
-        var strokeColorStateList: ColorStateList? = null,
-        var dashWidth: Int = 0,
-        var dashGap: Int = 0,
+        @JvmField var strokeWidth: Int = 0,
+        @JvmField var strokeColor: Int = Color.DKGRAY,
+        @JvmField var strokeColorStateList: ColorStateList? = null,
+        @JvmField var dashWidth: Int = 0,
+        @JvmField var dashGap: Int = 0,
 
         // <rotate>
-        var useRotate: Boolean = false,
-        var pivotX: Float = 0.5f,
-        var pivotY: Float = 0.5f,
-        var fromDegrees: Float = 0f,
-        var toDegrees: Float = 0f,
+        @JvmField var useRotate: Boolean = false,
+        @JvmField var pivotX: Float = 0.5f,
+        @JvmField var pivotY: Float = 0.5f,
+        @JvmField var fromDegrees: Float = 0f,
+        @JvmField var toDegrees: Float = 0f,
 
         // <scale>
-        var useScale: Boolean = false,
-        var scaleLevel: Int = 10000,
-        var scaleGravity: Int = Gravity.CENTER,
-        var scaleWidth: Float = 0f,
-        var scaleHeight: Float = 0f,
+        @JvmField var useScale: Boolean = false,
+        @JvmField var scaleLevel: Int = 10000,
+        @JvmField var scaleGravity: Int = Gravity.CENTER,
+        @JvmField var scaleWidth: Float = 0f,
+        @JvmField var scaleHeight: Float = 0f,
 
         // flip
-        var useFlip: Boolean = false,
-        var orientation: Int = FlipDrawable.ORIENTATION_HORIZONTAL,
+        @JvmField var useFlip: Boolean = false,
+        @JvmField var orientation: Int = FlipDrawable.ORIENTATION_HORIZONTAL,
 
         // ripple
-        var useRipple: Boolean = false,
-        var rippleColor: Int = Constants.DEFAULT_COLOR,
-        var rippleColorStateList: ColorStateList? = null,
-        var rippleRadius: Int = -1
+        @JvmField var useRipple: Boolean = false,
+        @JvmField var rippleColor: Int = Constants.DEFAULT_COLOR,
+        @JvmField var rippleColorStateList: ColorStateList? = null,
+        @JvmField var rippleRadius: Int = -1
 ) : Parcelable {
 
     companion object {
@@ -93,9 +94,9 @@ class DrawableProperties (
         }
     }
 
-    var cornerRadius: Int = cornerRadius
+    var cornerRadius: Int = _cornerRadius
         set(value) {
-            field = value
+            _cornerRadius = value
             topLeftRadius = value
             topRightRadius = value
             bottomRightRadius = value
@@ -153,10 +154,6 @@ class DrawableProperties (
             parcel.readInt()) {
     }
 
-    init {
-        this.cornerRadius = cornerRadius
-    }
-
     fun copy(): DrawableProperties {
         val parcel = Parcel.obtain()
         writeToParcel(parcel, 0)
@@ -196,6 +193,8 @@ class DrawableProperties (
         } else intArrayOf(startColor, endColor)
     }
 
+    fun materialization(): Drawable = DrawableBuilder().batch(this).build()
+
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(shape)
         parcel.writeInt(innerRadius)
@@ -203,7 +202,7 @@ class DrawableProperties (
         parcel.writeInt(thickness)
         parcel.writeFloat(thicknessRatio)
         parcel.writeByte(if (useLevelForRing) 1 else 0)
-        parcel.writeInt(cornerRadius)
+        parcel.writeInt(_cornerRadius)
         parcel.writeInt(topLeftRadius)
         parcel.writeInt(topRightRadius)
         parcel.writeInt(bottomRightRadius)
