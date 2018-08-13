@@ -14,12 +14,11 @@
 ## 功能
 
 * 通过代码构建Drawable
-* 支持`<shape>`, `<rotate>`, `<scale>`, `<ripple>`等类型的drawable
-* 支持镜面翻转
+* 支持`<shape>`，`<rotate>`，`<scale>`，`<ripple>`，`<layer-list>`等类型的drawable
+* 支持镜面翻转（水平或垂直方向）
 
-## 即将支持
+## 参与本项目
 
-* `LayerDrawable `(`<layer-list>`)
 * 如果你有需要的功能，请提[Issue](https://github.com/duanhong169/DrawableToolbox/issues)或[Pull request](https://github.com/duanhong169/DrawableToolbox/pulls)
 
 ## Gradle
@@ -186,6 +185,88 @@ return when(type) {
 结果：
 
 ![Segmented Control](art/sample-10.png)
+
+代码：
+
+```kotlin
+val layer1 = DrawableBuilder()
+        .size(200)
+        .rectangle()
+        .rounded()
+        .hairlineBordered()
+        .strokeColor(COLOR_DEFAULT)
+        .strokeColorPressed(COLOR_PRESSED)
+        .build()
+val layer2 = DrawableBuilder()
+        .rectangle()
+        .rounded()
+        .solidColor(COLOR_DEFAULT)
+        .build()
+val layer3 = DrawableBuilder()
+        .rectangle()
+        .rounded()
+        .solidColor(Color.WHITE)
+        .ripple()
+        .rippleColor(COLOR_DEFAULT)
+        .build()
+LayerDrawableBuilder()
+        .add(layer1)
+        .add(layer2)
+        .inset(10)
+        .add(layer3)
+        .inset(20)
+        .build()
+```
+
+结果：
+
+![Layer List: Several Borders](art/sample-14.png)
+
+代码：
+
+```kotlin
+val layer1 = DrawableBuilder()
+        .size(180)
+        .rectangle()
+        .build()
+val layer2 = DrawableBuilder()
+        .oval()
+        .solidColor(COLOR_DEFAULT)
+        .build()
+val layer3 = DrawableBuilder()
+        .rectangle()
+        .solidColor(COLOR_DEFAULT_DARK)
+        .rotate(45f)
+        .build()
+val layer4 = DrawableBuilder()
+        .rectangle()
+        .bottomLeftRadius(100)
+        .solidColor(COLOR_DEFAULT_DARK)
+        .build()
+val layer5 = DrawableBuilder()
+        .oval()
+        .solidColor(COLOR_DEFAULT)
+        .build()
+val layerDrawable = LayerDrawableBuilder()
+        .add(layer1)
+        .add(layer2)
+        .inset(20, 20, 100, 100)
+        .add(layer3)
+        .inset(100, 20, 20, 100)
+        .add(layer4)
+        .inset(20, 100, 100, 20)
+        .add(layer5)
+        .inset(100, 100, 20, 20)
+        .build()
+DrawableBuilder()
+        .baseDrawable(layerDrawable)
+        .rotate(0f, 360f)
+        .build()
+```
+
+结果：
+
+![Showcase: Layer List 1](art/sample-15.png)
 
 代码：
 

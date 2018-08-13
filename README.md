@@ -14,12 +14,12 @@ The missing DrawableToolbox for Android. Get rid of the boring and always repeat
 ## Features
 
 * Create drawables programmatically
-* Support `<shape>`, `<rotate>`, `<scale>`, `<ripple>` drawables
+* Support `<shape>`, `<rotate>`, `<scale>`, `<ripple>`, `<layer-list>` drawables
+* Support 'flip' (vertical or horizontal)
 
-## Future works
+## Contribute
 
-* Support `LayerDrawable `(`<layer-list>`)
-* Please file an issue
+* Please file an [issue](https://github.com/duanhong169/DrawableToolbox/issues) or [pull request](https://github.com/duanhong169/DrawableToolbox/pulls) 
 
 ## Gradle
 
@@ -185,6 +185,89 @@ return when(type) {
 Result:
 
 ![Segmented Control](art/sample-10.png)
+
+Code:
+
+```kotlin
+val layer1 = DrawableBuilder()
+        .size(200)
+        .rectangle()
+        .rounded()
+        .hairlineBordered()
+        .strokeColor(COLOR_DEFAULT)
+        .strokeColorPressed(COLOR_PRESSED)
+        .build()
+val layer2 = DrawableBuilder()
+        .rectangle()
+        .rounded()
+        .solidColor(COLOR_DEFAULT)
+        .build()
+val layer3 = DrawableBuilder()
+        .rectangle()
+        .rounded()
+        .solidColor(Color.WHITE)
+        .ripple()
+        .rippleColor(COLOR_DEFAULT)
+        .build()
+LayerDrawableBuilder()
+        .add(layer1)
+        .add(layer2)
+        .inset(10)
+        .add(layer3)
+        .inset(20)
+        .build()
+```
+
+Result:
+
+![Layer List: Several Borders](art/sample-14.png)
+
+Code:
+
+```kotlin
+val layer1 = DrawableBuilder()
+        .size(180)
+        .rectangle()
+        .build()
+val layer2 = DrawableBuilder()
+        .oval()
+        .solidColor(COLOR_DEFAULT)
+        .build()
+val layer3 = DrawableBuilder()
+        .rectangle()
+        .solidColor(COLOR_DEFAULT_DARK)
+        .rotate(45f)
+        .build()
+val layer4 = DrawableBuilder()
+        .rectangle()
+        .bottomLeftRadius(100)
+        .solidColor(COLOR_DEFAULT_DARK)
+        .build()
+val layer5 = DrawableBuilder()
+        .oval()
+        .solidColor(COLOR_DEFAULT)
+        .build()
+val layerDrawable = LayerDrawableBuilder()
+        .add(layer1)
+        .add(layer2)
+        .inset(20, 20, 100, 100)
+        .add(layer3)
+        .inset(100, 20, 20, 100)
+        .add(layer4)
+        .inset(20, 100, 100, 20)
+        .add(layer5)
+        .inset(100, 100, 20, 20)
+        .build()
+DrawableBuilder()
+        .baseDrawable(layerDrawable)
+        .rotate(0f, 360f)
+        .build()
+```
+
+Result:
+
+![Showcase: Layer List 1](art/sample-15.png)
+
 
 Code:
 
