@@ -1,11 +1,13 @@
 package top.defaults.drawabletoolboxapp
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.support.v4.content.ContextCompat
 import android.view.Gravity
 import top.defaults.drawabletoolbox.DrawableBuilder
+import top.defaults.drawabletoolbox.LayerDrawableBuilder
 import top.defaults.drawabletoolbox.StateListDrawableBuilder
 import top.defaults.drawabletoolboxapp.spec.DrawableSpec
 import top.defaults.drawabletoolboxapp.spec.ImageViewSourceDrawableSpec
@@ -169,6 +171,34 @@ fun samples(context: Context): List<DrawableSpec> {
                     }
                 }
 
+            }),
+            TextViewBackgroundDrawableSpec("Layer List", object : DrawableFactory {
+                override fun build(): Drawable {
+                    val layer1 = DrawableBuilder()
+                            .size(200)
+                            .oval()
+                            .hairlineBordered()
+                            .strokeColor(COLOR_DEFAULT)
+                            .strokeColorPressed(COLOR_PRESSED)
+                            .build()
+                    val layer2 = DrawableBuilder()
+                            .oval()
+                            .solidColor(COLOR_DEFAULT)
+                            .build()
+                    val layer3 = DrawableBuilder()
+                            .oval()
+                            .solidColor(Color.WHITE)
+                            .ripple()
+                            .rippleColor(COLOR_DEFAULT)
+                            .build()
+                    return LayerDrawableBuilder()
+                            .add(layer1)
+                            .add(layer2)
+                            .inset(10)
+                            .add(layer3)
+                            .inset(20)
+                            .build()
+                }
             }),
             ImageViewSourceDrawableSpec("Rotate & Leveled the Ring", object : DrawableFactory {
                 override fun build(): Drawable {
