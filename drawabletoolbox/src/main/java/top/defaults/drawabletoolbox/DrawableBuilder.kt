@@ -81,6 +81,8 @@ class DrawableBuilder {
     fun solidColor(solidColor: Int) = apply { properties.solidColor = solidColor }
     private var solidColorPressed: Int? = null
     fun solidColorPressed(color: Int?) = apply { solidColorPressed = color }
+    private var solidColorPressedWhenRippleUnsupported: Int? = null
+    fun solidColorPressedWhenRippleUnsupported(color: Int?) = apply { solidColorPressedWhenRippleUnsupported = color }
     private var solidColorDisabled: Int? = null
     fun solidColorDisabled(color: Int?) = apply { solidColorDisabled = color }
     private var solidColorSelected: Int? = null
@@ -157,6 +159,16 @@ class DrawableBuilder {
 
     fun build(): Drawable {
         var drawable: Drawable
+
+        // fall back when ripple is unavailable on devices with API < 21
+        if (shouldFallbackRipple()) {
+            if (solidColorPressedWhenRippleUnsupported != null) {
+                solidColorPressed(solidColorPressedWhenRippleUnsupported)
+            } else {
+                solidColorPressed(properties.rippleColor)
+            }
+        }
+
         if (needStateListDrawable()) {
             drawable = StateListDrawableBuilder()
                     .pressed(buildPressedDrawable())
@@ -343,7 +355,7 @@ class DrawableBuilder {
                     .build()
         }
 
-        if (properties.useRipple) {
+        if (isRippleSupported() && properties.useRipple) {
             wrappedDrawable = RippleDrawableBuilder()
                     .drawable(wrappedDrawable)
                     .color(properties.rippleColor)
@@ -353,6 +365,14 @@ class DrawableBuilder {
         }
 
         return wrappedDrawable
+    }
+
+    private fun shouldFallbackRipple(): Boolean {
+        return properties.useRipple && !isRippleSupported()
+    }
+
+    private fun isRippleSupported(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
     }
 
     private fun wrapRotateIfNeeded(drawable: Drawable): Drawable {
