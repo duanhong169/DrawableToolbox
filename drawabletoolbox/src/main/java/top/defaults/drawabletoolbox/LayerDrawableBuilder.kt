@@ -51,8 +51,15 @@ class LayerDrawableBuilder {
     @RequiresApi(Build.VERSION_CODES.M)
     fun insetEnd(inset: Int) = apply { layers.last().insetEnd = inset }
     fun inset(inset: Int) = apply { insetLeft(inset).insetTop(inset).insetRight(inset).insetBottom(inset) }
+    fun inset(insetLeft: Int, insetTop: Int, insetRight: Int, insetBottom: Int) = apply {
+        insetLeft(insetLeft).insetTop(insetTop).insetRight(insetRight).insetBottom(insetBottom)
+    }
     @RequiresApi(Build.VERSION_CODES.M)
     fun insetRelative(inset: Int) = apply { insetStart(inset).insetTop(inset).insetEnd(inset).insetBottom(inset) }
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun insetRelative(insetStart: Int, insetTop: Int, insetEnd: Int, insetBottom: Int) = apply {
+        insetStart(insetStart).insetTop(insetTop).insetEnd(insetEnd).insetBottom(insetBottom)
+    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun gravity(gravity: Int) = apply { layers.last().gravity = gravity }

@@ -172,21 +172,24 @@ fun samples(context: Context): List<DrawableSpec> {
                 }
 
             }),
-            TextViewBackgroundDrawableSpec("Layer List", object : DrawableFactory {
+            TextViewBackgroundDrawableSpec("Layer List: Several Borders", object : DrawableFactory {
                 override fun build(): Drawable {
                     val layer1 = DrawableBuilder()
                             .size(200)
-                            .oval()
+                            .rectangle()
+                            .rounded()
                             .hairlineBordered()
                             .strokeColor(COLOR_DEFAULT)
                             .strokeColorPressed(COLOR_PRESSED)
                             .build()
                     val layer2 = DrawableBuilder()
-                            .oval()
+                            .rectangle()
+                            .rounded()
                             .solidColor(COLOR_DEFAULT)
                             .build()
                     val layer3 = DrawableBuilder()
-                            .oval()
+                            .rectangle()
+                            .rounded()
                             .solidColor(Color.WHITE)
                             .ripple()
                             .rippleColor(COLOR_DEFAULT)
@@ -200,6 +203,47 @@ fun samples(context: Context): List<DrawableSpec> {
                             .build()
                 }
             }),
+            ImageViewSourceDrawableSpec("Showcase: Layer List 1", object : DrawableFactory {
+                override fun build(): Drawable {
+                    val layer1 = DrawableBuilder()
+                            .size(180)
+                            .rectangle()
+                            .build()
+                    val layer2 = DrawableBuilder()
+                            .oval()
+                            .solidColor(COLOR_DEFAULT)
+                            .build()
+                    val layer3 = DrawableBuilder()
+                            .rectangle()
+                            .solidColor(COLOR_DEFAULT_DARK)
+                            .rotate(45f)
+                            .build()
+                    val layer4 = DrawableBuilder()
+                            .rectangle()
+                            .bottomLeftRadius(100)
+                            .solidColor(COLOR_DEFAULT_DARK)
+                            .build()
+                    val layer5 = DrawableBuilder()
+                            .oval()
+                            .solidColor(COLOR_DEFAULT)
+                            .build()
+                    val layerDrawable = LayerDrawableBuilder()
+                            .add(layer1)
+                            .add(layer2)
+                            .inset(20, 20, 100, 100)
+                            .add(layer3)
+                            .inset(100, 20, 20, 100)
+                            .add(layer4)
+                            .inset(20, 100, 100, 20)
+                            .add(layer5)
+                            .inset(100, 100, 20, 20)
+                            .build()
+                    return DrawableBuilder()
+                            .baseDrawable(layerDrawable)
+                            .rotate(0f, 360f)
+                            .build()
+                }
+            }).animateRestart().initialLevel(8750),
             ImageViewSourceDrawableSpec("Rotate & Leveled the Ring", object : DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()

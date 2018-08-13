@@ -13,8 +13,10 @@ class DrawableBuilder {
     private var properties = DrawableProperties()
     private var order: AtomicInteger = AtomicInteger(1)
     private var transformsMap = TreeMap<Int, (Drawable) -> Drawable>()
+    private var baseDrawable: Drawable? = null
 
     fun batch(properties: DrawableProperties) = apply { this.properties = properties.copy() }
+    fun baseDrawable(drawable: Drawable) = apply { baseDrawable = drawable }
 
     // <shape>
     fun shape(shape: Int) = apply { properties.shape = shape }
@@ -158,6 +160,10 @@ class DrawableBuilder {
     fun rippleRadius(radius: Int) = apply { properties.rippleRadius = radius }
 
     fun build(): Drawable {
+        if (baseDrawable != null) {
+            return wrap(baseDrawable!!)
+        }
+
         var drawable: Drawable
 
         // fall back when ripple is unavailable on devices with API < 21
