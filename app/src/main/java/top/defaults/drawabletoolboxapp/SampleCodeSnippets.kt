@@ -284,20 +284,6 @@ fun samples(context: Context): List<DrawableSpec> {
                             .build()
                 }
             }).animateRestart(),
-            ImageViewSourceDrawableSpec("Rotate, Sweep & Vertical Flip the Ring", object : DrawableFactory {
-                override fun build(): Drawable {
-                    return DrawableBuilder()
-                            .size(200)
-                            .ring()
-                            .innerRadiusRatio(3f)
-                            .thicknessRatio(10f)
-                            .gradient()
-                            .sweepGradient()
-                            .rotate(0f, 360f)
-                            .flipVertical()
-                            .build()
-                }
-            }).animateRestart(),
             ImageViewSourceDrawableSpec("Rotate, Sweep & Scale the Oval with States", object : DrawableFactory {
                 override fun build(): Drawable {
                     val baseBuilder = DrawableBuilder()
