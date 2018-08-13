@@ -165,12 +165,14 @@ fun setStrokeColor(drawable: GradientDrawable, value: Int) {
 }
 
 fun setDrawable(rotateDrawable: RotateDrawable, drawable: Drawable) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         rotateDrawable.drawable = drawable
     } else {
         try {
             val drawableField = resolveField(rotateState, "mDrawable")
-            drawableField.set(rotateDrawable.constantState, drawable)
+            val stateField = resolveField(RotateDrawable::class.java, "mState")
+            drawableField.set(stateField.get(rotateDrawable), drawable)
+            drawable.callback = rotateDrawable
         } catch (e: NoSuchFieldException) {
             e.printStackTrace()
         } catch (e: IllegalAccessException) {
