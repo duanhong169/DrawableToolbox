@@ -3,6 +3,7 @@
 [![platform](https://img.shields.io/badge/platform-android-brightgreen.svg)](https://developer.android.com/index.html)
 <a target="_blank" href="https://android-arsenal.com/api?level=14"><img src="https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat"></a>
 [![license](https://img.shields.io/badge/license-Apache%202-green.svg)](https://github.com/duanhong169/DrawableToolbox/blob/master/LICENSE)
+[![Awesome Kotlin Badge](https://kotlin.link/awesome-kotlin.svg)](https://github.com/KotlinBy/awesome-kotlin)
 
 [English](README.md) | 中文
 
