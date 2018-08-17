@@ -7,7 +7,7 @@
 
 English | [中文](README_cn.md)
 
-The missing DrawableToolbox for Android. Get rid of the boring and always repeated `drawable.xml` files.
+The missing DrawableToolbox for Android. Create drawables programmatically and get rid of the boring and always repeated `drawable.xml` files.
 
 <img src='art/screen-shot-1.jpg' height='500px'/> <img src='art/screen-video-1.gif' height='500px'/> <br/>
 <img src='art/screen-shot-2.jpg' height='500px'/> <img src='art/screen-video-2.gif' height='500px'/>
