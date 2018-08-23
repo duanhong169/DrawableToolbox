@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat
 import android.view.Gravity
 import top.defaults.drawabletoolbox.DrawableBuilder
 import top.defaults.drawabletoolbox.LayerDrawableBuilder
+import top.defaults.drawabletoolbox.PathShapeDrawableBuilder
 import top.defaults.drawabletoolbox.StateListDrawableBuilder
 import top.defaults.drawabletoolboxapp.spec.DrawableSpec
 import top.defaults.drawabletoolboxapp.spec.ImageViewSourceDrawableSpec
@@ -257,6 +258,15 @@ fun samples(context: Context): List<DrawableSpec> {
                             .build()
                 }
             }).animateReverse().initialLevel(5000),
+            ImageViewSourceDrawableSpec("Star", object : DrawableFactory {
+                override fun build(): Drawable {
+                    return PathShapeDrawableBuilder()
+                            .star(100)
+                            .width(400)
+                            .height(200)
+                            .build()
+                }
+            }),
             ImageViewSourceDrawableSpec("Rotate & Sweep the Ring", object : DrawableFactory {
                 override fun build(): Drawable {
                     return DrawableBuilder()
