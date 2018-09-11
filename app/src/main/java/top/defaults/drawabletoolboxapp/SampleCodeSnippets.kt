@@ -2,6 +2,7 @@ package top.defaults.drawabletoolboxapp
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Path
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.support.v4.content.ContextCompat
@@ -259,11 +260,23 @@ fun samples(context: Context): List<DrawableSpec> {
                 }
             }).animateReverse().initialLevel(5000),
             ImageViewSourceDrawableSpec("Star", object : DrawableFactory {
+                fun star(): Path {
+                    val path = Path()
+                    val half = 50
+                    path.moveTo(half * 0.5f, half * 0.84f)
+                    path.lineTo(half * 1.5f, half * 0.84f)
+                    path.lineTo(half * 0.68f, half * 1.45f)
+                    path.lineTo(half * 1.0f, half * 0.5f)
+                    path.lineTo(half * 1.32f, half * 1.45f)
+                    path.lineTo(half * 0.5f, half * 0.84f)
+                    path.close()
+                    return path
+                }
+
                 override fun build(): Drawable {
                     return PathShapeDrawableBuilder()
-                            .star(100)
-                            .width(400)
-                            .height(200)
+                            .path(star(), 100f, 100f)
+                            .size(200)
                             .build()
                 }
             }),
