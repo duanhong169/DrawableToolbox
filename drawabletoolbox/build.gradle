@@ -10,7 +10,7 @@ ext {
 
     libraryName = 'DrawableToolbox'
     libraryDescription = 'The missing DrawableToolbox for Android'
-    libraryVersion = '1.0.6'
+    libraryVersion = '1.0.7'
 
     gitUrl = 'https://github.com/duanhong169/DrawableToolbox.git'
     siteUrl = 'https://github.com/duanhong169/DrawableToolbox'
