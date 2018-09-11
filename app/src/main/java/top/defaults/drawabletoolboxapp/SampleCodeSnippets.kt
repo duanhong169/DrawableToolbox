@@ -277,7 +277,9 @@ fun samples(context: Context): List<DrawableSpec> {
                     return PathShapeDrawableBuilder()
                             .path(star(), 100f, 100f)
                             .size(200)
-                            .build()
+                            .build {
+                                it.paint.color = COLOR_DEFAULT
+                            }
                 }
             }),
             ImageViewSourceDrawableSpec("Rotate & Sweep the Ring", object : DrawableFactory {

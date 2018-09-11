@@ -22,7 +22,7 @@ class PathShapeDrawableBuilder {
     fun height(height: Int) = apply { this.height = height }
     fun size(size: Int) = apply { width(size).height(size) }
 
-    fun build(): ShapeDrawable {
+    fun build(custom: ((shapeDrawable: ShapeDrawable) -> Unit)? = null): ShapeDrawable {
         val shapeDrawable = ShapeDrawable()
         if (path == null || width <= 0 || height <= 0) {
             return shapeDrawable
@@ -32,6 +32,9 @@ class PathShapeDrawableBuilder {
         shapeDrawable.shape = pathShape
         shapeDrawable.intrinsicWidth = width
         shapeDrawable.intrinsicHeight = height
+        if (custom != null) {
+            custom(shapeDrawable)
+        }
         return shapeDrawable
     }
 }
